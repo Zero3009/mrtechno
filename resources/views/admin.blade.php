@@ -20,6 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
+  <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-black.css')}}">
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-blue.css')}}">
   <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css" />
 
@@ -71,7 +72,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -277,17 +278,17 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="/admin/proveedores"><i class="fa fa-link"></i> <span>Link</span></a></li>
+        <li class="active"><a href="/admin/proveedores"><i class="fa fa-group"></i> <span>Gestionar Proveedores</span></a></li>
         <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Gestionar Stock</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
+            <li><a href="#">Alta</a></li>
+            <li><a href="#">Salida</a></li>
           </ul>
         </li>
       </ul>

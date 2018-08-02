@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1" >
         <div class="panel panel-default">
-            <div class="panel-heading" style="background: #4682B4; color: #FFFFFF;">
+            <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                 <div class="row">
                     <div class="col-md-4" style="float: left;">
                         <h3 class="panel-title" style="margin-top: 10px;">Gestionar proveedores</h3>
