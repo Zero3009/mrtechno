@@ -1,3 +1,4 @@
+@extends('adminlte::page')
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
