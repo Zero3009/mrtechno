@@ -11,4 +11,9 @@ class Proveedores extends Model
     //Definimos los campos que se pueden llenar con asignación masiva
     protected $fillable = ['nombre', 'tel'];
     public $timestamps = false;
+
+    public function setNombreAttribute($value)
+	{
+	    $this->attributes['nombre'] = strtoupper($value);
+	}
 }

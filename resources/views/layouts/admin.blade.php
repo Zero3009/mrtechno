@@ -286,13 +286,13 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Alta</a></li>
+            <li><a href="/admin/stock">Alta</a></li>
             <li><a href="#">Salida</a></li>
           </ul>
         </li>
         <li class="{{ Request::segment(2) === 'proveedores' ? 'active' : null }}"><a href="/admin/proveedores"><i class="fa fa-group"></i> <span>Gestionar Proveedores</span></a></li>
-        <li class="{{ Request::segment(2) === 'etiquetas' ? 'active' : null }}">
-          <a href="/admin/etiquetas"><i class="fa fa-tags"></i> <span>Gestionar etiquetas</span>
+        <li class="{{ Request::segment(2) === 'productos' ? 'active' : null }}">
+          <a href="/admin/productos"><i class="fa fa-hdd-o"></i> <span>Gestionar productos</span>
           </a>
         </li>
         

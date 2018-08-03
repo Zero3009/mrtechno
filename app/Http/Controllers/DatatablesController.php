@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Proveedores;
-use App\Etiquetas;
+use App\Productos;
 use Yajra\Datatables\Datatables;
 use DB;
 
@@ -25,13 +25,13 @@ class DatatablesController extends Controller
 						});
 		return $datatables->make(true); 
 	}
-	public function GetEtiquetas()
+	public function GetProductos()
 	{
-		$retornar = Etiquetas::select(['tags.id', 'tags.nombre', 'tags.tipo'])->where('estado','=', true);
+		$retornar = Productos::select(['prods.id', 'prods.tipo','prods.marca','prods.modelo','prods.codbarras'])->where('estado','=', true);
 		$datatables = app('datatables')
 						->of($retornar)
 						->addColumn('action', function($retornar){
-							return '<a href="/admin/etiquetas/editar/'.$retornar->id.'" class="btn btn-xs btn-primary details-control"><i class="glyphicon glyphicon-edit"></i></a><a href="#" class="btn btn-xs btn-danger delete" data-id="'.$retornar->id.'"><i class="glyphicon glyphicon-trash"></i></a>';
+							return '<a href="/admin/productos/editar/'.$retornar->id.'" class="btn btn-xs btn-primary details-control"><i class="glyphicon glyphicon-edit"></i></a><a href="#" class="btn btn-xs btn-danger delete" data-id="'.$retornar->id.'"><i class="glyphicon glyphicon-trash"></i></a>';
 						});
 		return $datatables->make(true);
 	}

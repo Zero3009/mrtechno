@@ -6,21 +6,25 @@
             <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                 <div class="row">
                     <div class="col-md-4" style="float: left;">
-                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar etiquetas</h3>
+                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar proveedores</h3>
                     </div>
 
                     <div class="col-md-8" style="float: right;">
-                        <a class="btn btn-success" href="/admin/etiquetas/nuevo" style="float: right;">
+                        <a class="btn btn-success" href="/admin/proveedores/nuevo" style="float: right;">
                         <i class="fa fa-plus"></i> Nuevo</a>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
+                <form>
+                    <input class="form-control" type="text" name="" id="">
+                    <input class="btn btn btn-success" tabindex="1" type="" name="hola" value="Finalizar edición">
+                </form>
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Tipo</th>
+                            <th>Telefono</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -56,32 +60,9 @@
 @section('js')
 @push('scripts')
 <script>
-$(document).ready(function () {
-var tabla = $('#tabla').DataTable({
-    "processing": true,
-    "serverSide": true,
-    "ajax": '/datatables/getetiquetas',
-    "columns":[
-        {data: 'nombre', name:'nombre'},
-        {data: 'tipo', name:'tipo'},
-        {data: 'action', name: 'action', orderable: false}
-    ],
-    "language":{
-                url: "{!! asset('/plugins/datatables/lenguajes/spanish.json') !!}"
-    },
-    "bFilter": true,
-});
-
-});
-$('#tabla').on('draw.dt', function () {
-    $(".delete").click(function(){
-        $('#delete').modal();
-        var id = $(this).data('id');
-        console.log(id);
-        $("#titulo").html(" Eliminar proveedor "+$(this).closest("tr").children("td").eq(0).html());
-        $(".id").val(id);
-    });
-});
+    $('#hola').click(function(){
+        console.log('hola');
+    })
 
 
 </script>

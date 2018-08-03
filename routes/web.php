@@ -16,12 +16,16 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+//AJAX
+Route::get('/ajax/tags', ['uses' => 'AjaxController@getProductos']);
+//FIN AJAX
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin/stock', 'StockController@IndexStock');
 //DATATABLES
 Route::get('/datatables/getproveedores', ['uses' => 'DatatablesController@GetProveedores']);
-Route::get('/datatables/getetiquetas', ['uses' => 'DatatablesController@GetEtiquetas']);
+Route::get('/datatables/getproductos', ['uses' => 'DatatablesController@GetProductos']);
 
 //PROVEEDORES
 Route::get('/admin/proveedores', 'ProveedoresController@Index');
@@ -33,8 +37,14 @@ Route::post('/admin/proveedores/editar/post', ['uses' => 'ProveedoresController@
 Route::post('/admin/proveedores/eliminar', ['uses' => 'ProveedoresController@EliminarProveedor']);
 //FIN PROVEEDORES
 
-//ETIQUETAS
-Route::get('/admin/etiquetas', ['uses' => 'EtiquetasController@Index']);
-Route::get('/admin/etiquetas/nuevo', ['uses' => 'EtiquetasController@NuevoEtiquetaView']);
-Route::post('/admin/etiquetas/nuevo/post', ['uses' => 'EtiquetasController@NuevoEtiqueta']);
-Route::get('/admin/etiquetas/editar/{id}', ['uses' => 'EtiquetasController@EditarEtiquetaView']);
+//PRODUCTOS
+Route::get('/admin/productos', ['uses' => 'ProductosController@Index']);
+Route::get('/admin/productos/nuevo', ['uses' => 'ProductosController@NuevoProductoView']);
+Route::post('/admin/productos/nuevo/post', ['uses' => 'ProductosController@NuevoProducto']);
+Route::get('/admin/productos/editar/{id}', ['uses' => 'ProductosController@EditarProductoView']);
+Route::post('/admin/productos/editar/post', ['uses' => 'ProductosController@EditarProducto']);
+Route::post('/admin/productos/eliminar', ['uses' => 'ProductosController@EliminarProducto']);
+//FIN PRODUCTOS
+
+//STOCK
+Route::get('/admin/stock', ['uses' => 'StockController@Index']);
