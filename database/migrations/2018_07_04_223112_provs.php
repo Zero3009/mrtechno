@@ -16,6 +16,7 @@ class Provs extends Migration
             $table->increments('id');
             $table->string('nombre', 80)->unique();
             $table->string('tel', 60)->nullable();
+            $table->boolean('estado')->default(true);
         });
     }
 

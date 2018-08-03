@@ -15,16 +15,16 @@ use Validator;
 class ProveedoresController extends Controller
 {
     public function Index(){
-    	return view('proveedores');
+    	return view('proveedores.proveedores');
     }
     public function NuevoProveedorView()
     {
-        return view('proveedores_nuevo');
+        return view('proveedores.proveedores_nuevo');
     }
     public function EditarProveedorView($id)
     {
         $prov = Proveedores::select('*')->where('id','=', $id)->first();
-        return View::make('proveedores_editar')->with('prov', $prov); 
+        return View::make('proveedores.proveedores_editar')->with('prov', $prov); 
     }
     public function EliminarProveedor(Request $request)
     {
@@ -45,7 +45,7 @@ class ProveedoresController extends Controller
         ]);
 
         $post = $request->all();
-        Provs::find($post['id'])->update([
+        Proveedores::find($post['id'])->update([
             'nombre' => $post['nombre'],
             'tel' => $post['tel']
         ]);
@@ -64,7 +64,7 @@ class ProveedoresController extends Controller
                             ->withErrors($validator)
                             ->withInput();
             }
-            $query = new Provs;
+            $query = new Proveedores;
                 $query->nombre = $request->nombre;
                 $query->tel = $request->tel;
             $query->save();

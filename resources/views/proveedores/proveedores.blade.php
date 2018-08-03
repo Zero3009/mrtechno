@@ -1,4 +1,4 @@
-@extends('admin')
+@extends('layouts.admin')
 @section('main-content')
 <div class="row">
     <div class="col-md-10 col-md-offset-1" >
@@ -60,11 +60,11 @@ $(document).ready(function () {
 var tabla = $('#tabla').DataTable({
     "processing": true,
     "serverSide": true,
-    "ajax": '/datatables/get',
+    "ajax": '/datatables/getproveedores',
     "columns":[
         {data: 'nombre', name:'nombre'},
         {data: 'tel', name:'tel'},
-        {data: 'action', name: 'action'}
+        {data: 'action', name: 'action', orderable: false}
     ],
     "language":{
                 url: "{!! asset('/plugins/datatables/lenguajes/spanish.json') !!}"
