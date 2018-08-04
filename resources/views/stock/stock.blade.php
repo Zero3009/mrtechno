@@ -17,8 +17,18 @@
             </div>
             <div class="panel-body">
                 <form>
-                    <input class="form-control" type="text" name="" id="">
-                    <input class="btn btn btn-success" tabindex="1" type="" name="hola" value="Finalizar edición">
+                    <table class="table table-striped table-bordered" name="tabla" id="tabla">
+                        <tr>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Accion</th>
+                        </tr>
+                        <tr>
+                            <td><select name="marca" class="form-control" id="marca_1"></td>
+                            <td><select name="modelo" class="form-control" id="modelo_1"></select></td>
+                            <td><input class="btn btn-success" tabindex="1" type="button" name="add[]" onclick="addRow()" id="add_1" value="+"></td>
+                        </tr>
+                    </table>
                 </form>
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
                     <thead>
@@ -60,9 +70,56 @@
 @section('js')
 @push('scripts')
 <script>
-    $('#hola').click(function(){
-        console.log('hola');
-    })
+var i = 1;
+function addRow()
+    {
+        i++;
+        $('#tabla').append('<tr id ="row'+i+'"><td><select name="marca" class="form-control" id="marca_'+i+'"></td><td><select name="modelo" class="form-control" id="modelo_'+i+'"></select></td><td><input type="button" class="btn btn-success" name="add[]" onclick="addRow()" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>');
+        $.getJSON("/ajax/productos",null,function(data){
+        $('#modelo_'+i+'').select2({
+            data: data,
+            language: "es",
+            placeholder: "Seleccionar modelo"
+        });
+});
+
+    }
+$(document).on('click', '.btn_remove', function(){
+        var button_id = $(this).attr("id"); 
+        $('#row'+button_id+'').remove();
+    });
+/*$('.js-data-example-ajax').select2({
+  ajax: {
+    url: '/ajax/productos',
+    dataType: 'json',
+
+    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+  }
+});*/
+$.getJSON("/ajax/productos",null,function(data){
+    $("#modelo_1").select2({
+        data: data,
+        language: "es",
+        placeholder: "Seleccionar modelo"
+    });
+});
+$.getJSON("/ajax/marcas", null, function(data){
+    $("#marca_1").select2({
+        data: data,
+        language: "es",
+        placeholder: "Seleccionar marca"
+    });
+});
+
+/*    
+    //$('button[id^="add_"]').click(function(){
+    
+    
+    //})
+    
+});*/
+
+    
 
 
 </script>

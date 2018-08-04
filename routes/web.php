@@ -17,7 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 //AJAX
-Route::get('/ajax/tags', ['uses' => 'AjaxController@getProductos']);
+Route::get('/ajax/productos', ['uses' => 'AjaxController@getProductos']);
+Route::get('/ajax/marcas', ['uses' => 'AjaxController@getMarcas']);
 //FIN AJAX
 
 
