@@ -19,6 +19,7 @@ Auth::routes();
 //AJAX
 Route::get('/ajax/productos', ['uses' => 'AjaxController@getProductos']);
 Route::get('/ajax/marcas', ['uses' => 'AjaxController@getMarcas']);
+Route::get('/ajax/codbarras', ['uses' => 'AjaxController@getCodbarras']);
 //FIN AJAX
 
 
