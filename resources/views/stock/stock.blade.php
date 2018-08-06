@@ -103,7 +103,15 @@ $.getJSON("/ajax/productos",null,function(data){
         placeholder: "Seleccionar modelo"
     });
 });
+var j = 0;
 $.getJSON("/ajax/marcas", null, function(data){
+    var data = $.map(data, function (obj) {
+        j++;
+        obj.id = j; // replace pk with your identifier
+
+        return obj;
+    });
+    console.log(data);
     $("#marca_1").select2({
         data: data,
         language: "es",
