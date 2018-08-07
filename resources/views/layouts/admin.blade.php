@@ -23,16 +23,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-black.css')}}">
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-blue.css')}}">
   <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css" />
-  <link rel="stylesheet" href="/plugins/select2/select2.min.css" />
   <!-- jQuery 3 -->
 <script src="/plugins/jQuery/jquery-3.2.1.min.js"></script>
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
+<script src="/plugins/arrive/arrive.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/vendor/adminlte/dist/js/adminlte.min.js"></script>
+
 <script src="/plugins/jQuery/jquery-ui.min.js"></script>
-<script src="/plugins/select2/select2.full.min.js"></script>
+<script src="/plugins/autocomplete/jquery.autocomplete.js"></script>
 
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>

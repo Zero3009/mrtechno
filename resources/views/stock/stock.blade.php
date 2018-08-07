@@ -19,18 +19,16 @@
                 <form>
                     <table class="table table-striped table-bordered" name="tabla" id="tabla">
                         <tr>
-                            <th style="width:10%">Codigo de barras</th>
-                            <th>Tipo</th>
-                            <th style="width:15%">Marca</th>
-                            <th style="width:25%">Modelo</th>
+                            <th style="width:25%">Codigo de barras</th>
+                            <!--<th style="width:25%">Modelo</th>
+                            <th style="width:30%">Serial</th>-->
                             <th>Accion</th>
                         </tr>
-                        <tr>
-                            <td><select name="codbarras" class="form-control" id="codbarras_1"></select></td>
-                            <td><select name="tipo" class="form-control" id="tipo_1"></select></td>
-                            <td><select name="marca" class="form-control" id="marca_1"></td>
-                            <td><select name="modelo" class="form-control" id="modelo_1" disabled="false"></select></td>
-                            <td><input class="btn btn-success" tabindex="1" type="button" name="add[]" onclick="addRow()" id="add_1" value="+"></td>
+                        <tr id="row1" class="tr_clone">
+                            <td><input type="text" class="form-control" name="codbarras" id="autocomplete_1"/></td>
+                            <!--<td><select name="modelo" class="form-control" id="modelo_1" disabled></select></td>
+                            <td><select name="serial" class="form-control" id="serial_1"></select></td>-->
+                            <td><input class="btn" tabindex="1" type="button" name="add"  id="add_1" value="+"></td>
                         </tr>
                     </table>
                 </form>
@@ -74,188 +72,22 @@
 @section('js')
 @push('scripts')
 <script>
-var i = 1;
-$('#modelo_1').select2();
-/*$(document).ready(function () {
-var tabla = $('#tabla').DataTable({
-    "processing": true,
-    "serverSide": true,
-    "ajax": '/datatables/getstock',
-    "columns":[
-        {data: 'tipo', name:'tipo'},
-        {data: 'marca', name:'marca'},
-        {data: 'modelo', name:'modelo'},
-        {data: 'codbarras', name:'codbarras'},
-        {data: 'action', name: 'action', orderable: false}
-    ],
-    "language":{
-                url: "{!! asset('/plugins/datatables/lenguajes/spanish.json') !!}"
-    },
-    "bFilter": true,
-});*/
-function addRow()
-    {
-        i++;
-        $('#tabla').append('<tr id ="row'+i+'"><td><select name="codbarras" class="form-control" id="codbarras_1"></select></td><td><select name="tipo" class="form-control" id="tipo_1"></select></td><td><select name="marca" class="form-control" id="marca_'+i+'"></td><td><select name="modelo" class="form-control" id="modelo_'+i+'"></select></td><td><input type="button" class="btn btn-success" name="add[]" onclick="addRow()" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>');
-        
-        $('#marca_'+i).select2({
-        language: "es",
-        placeholder: "Seleccionar marca",
-        ajax:{
-            url:'/ajax/marcas',
-            data: function(params){
-                var query = {
-                    search: params.term
-                }
-                return query;    
-            },
-            dataType: 'json',
-            processResults: function(data)
-            {
-                var j = 0;
-                data.forEach(function(obj) { 
-                    
-                    obj.id = j; 
-                    j++;
-                });
-                console.log(data);
-                return {
-                    results: data
-                }
-            }
-        },
-        cache: true
-        });
-
-    }
-
-$('#codbarras_1').on("select2:select", function (e) {
-    $("#modelo_1").val(null).trigger("change");
-    $("#modelo_1").select2("val", "");
-    //$("#modelo_1").select2('data', null);
-    $('#modelo_1').prop('disabled', false);
-    $.getJSON('/ajax/productos',{
-        mod: e.params.data.text
-    }
-
-        , function(data){
-        $('#modelo_1').select2({
-            data: data,
-            language: "es",
-            placeholder: "Seleccionar marca",
-        /*ajax:{
-        url:'/ajax/productos',
-        data: function(params){
-            var query = {
-                search: params.term,
-                mod: e.params.data.text
-
-            }
-            return query;    
-        },
-        dataType: 'json',
-        processResults: function(data)
-        {
-            /*var j = 0;
-            data.forEach(function(obj) { 
-                
-                obj.id = j; 
-                j++;
-            });
-            console.log(data);
-            return {
-                results: data
-            }
-        }
-        },
-    });*/
-        });
-    });
-    $('#modelo_1').val(1).trigger('change.select2');
-});
-$(document).on('click', '.btn_remove', function(){
-
-    var button_id = $(this).attr("id"); 
-    $('#row'+button_id+'').remove();
-});
-/*$('.js-data-example-ajax').select2({
-  ajax: {
-    url: '/ajax/productos',
+    $('#autocomplete_1').devbridgeAutocomplete({
+    serviceUrl: '/ajax/codbarras',
     dataType: 'json',
-
-    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-  }
-});*/
-/*$.getJSON("/ajax/productos",null,function(data){
-    $("#modelo_1").select2({
-        data: data,
-        allowClear: true,
-        language: "es",
-        placeholder: "Seleccionar modelo"
+    onSelect: function (suggestion) {
+        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+    },
+    transformResult: function(response) {
+        console.log(response);
+        return {
+            suggestions: $.map(response, function(dataItem) {
+                return { value: dataItem.text, data: dataItem.id };
+            })
+        };
+    },
     });
-});*/
 
-/*$("#marca_1").select2({
-    
-    language: "es",
-    placeholder: "Seleccionar marca",
-    ajax:{
-        url:'/ajax/marcas',
-        data: function(params){
-            var query = {
-                search: params.term
-            }
-            return query;    
-        },
-        dataType: 'json',
-        processResults: function(data)
-        {
-            var j = 0;
-            data.forEach(function(obj) { 
-                
-                obj.id = j; 
-                j++;
-            });
-            console.log(data);
-            return {
-                results: data
-            }
-        }
-    },
-    cache: true
-});*/
-//});
-$("#codbarras_1").select2({
-    
-    language: "es",
-    placeholder: "Código de barras",
-    ajax:{
-        url:'/ajax/codbarras',
-        data: function(params){
-            var query = {
-                search: params.term
-            }
-            return query;    
-        },
-        dataType: 'json',
-        processResults: function(data)
-        {
-            return {
-                results: data
-            }
-        }
-    },
-    //cache: true
-});
-
-
-/*    
-    //$('button[id^="add_"]').click(function(){
-    
-    
-    //})
-    
-});*/
 
     
 

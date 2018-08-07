@@ -46,7 +46,7 @@ class AjaxController extends Controller
 	public function getCodbarras(Request $request){
 		//return $request->all();
 		if($request->search){
-			$ajax = Productos::select('prods.codbarras as text','prods.id as id')
+			$ajax = Productos::select('prods.codbarras as value','prods.id as data')
 								->where('prods.codbarras', 'ilike', '%'.$request->search.'%')
 								->where('prods.estado','=', true)
 								->get();
