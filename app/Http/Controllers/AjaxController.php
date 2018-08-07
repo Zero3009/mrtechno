@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Productos;
+use App\Proveedores;
 
 use Response;
 
@@ -44,9 +45,9 @@ class AjaxController extends Controller
 		return Response::json($ajax);
 	}
 	public function getCodbarras(Request $request){
-		//return $request->all();
+		//return $request->search;
 		if($request->search){
-			$ajax = Productos::select('prods.codbarras as value','prods.id as data')
+			$ajax = Productos::select('prods.codbarras as text','prods.id as id')
 								->where('prods.codbarras', 'ilike', '%'.$request->search.'%')
 								->where('prods.estado','=', true)
 								->get();
@@ -56,5 +57,18 @@ class AjaxController extends Controller
 								->get();
 		}
 		return Response::json($ajax);
+	}
+	public function getProveedores(Request $request){
+		if($request->search){
+			$ajax = Proveedores::select('provs.nombre as text','provs.id as id')
+								->where('provs.nombre', 'ilike', '%'.$request->search.'%')
+								->where('provs.estado','=', true)
+								->get();
+		}else{
+			$ajax = Proveedores::select('provs.nombre as text','provs.id as id')
+								->where('provs.estado','=', true)
+								->get();
+		}
+		return Response::json($ajax);	
 	}
 }

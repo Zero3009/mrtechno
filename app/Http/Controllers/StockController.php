@@ -10,4 +10,8 @@ class StockController extends Controller
     {
     	return view('stock.stock');
     }
+    public function NewStock(Request $request)
+    {
+    	return $request->all();
+    }
 }

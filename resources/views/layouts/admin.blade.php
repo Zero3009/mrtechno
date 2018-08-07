@@ -17,6 +17,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/vendor/Ionicons/css/ionicons.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/AdminLTE.min.css')}}">
+  <link rel="stylesheet" href="/plugins/select2/select2.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
@@ -33,7 +34,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/vendor/adminlte/dist/js/adminlte.min.js"></script>
 
 <script src="/plugins/jQuery/jquery-ui.min.js"></script>
-<script src="/plugins/autocomplete/jquery.autocomplete.js"></script>
+<script src="/plugins/select2/select2.full.min.js"></script>
 
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
@@ -83,9 +84,9 @@ desired effect
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>M</b>T</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>MR</b>Techno</span>
     </a>
 
     <!-- Header Navbar -->

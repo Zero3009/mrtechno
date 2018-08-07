@@ -16,21 +16,26 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form>
+                <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal">
                     <table class="table table-striped table-bordered" name="tabla" id="tabla">
                         <tr>
                             <th style="width:25%">Codigo de barras</th>
-                            <!--<th style="width:25%">Modelo</th>
-                            <th style="width:30%">Serial</th>-->
-                            <th>Accion</th>
+                            <th style="width:25%">Modelo</th>
+                            <th style="width:25%">Serial</th>
+                            <th style="width:15%">Proveedor</th>
+                            <th style="width:10%">Accion</th>
                         </tr>
-                        <tr id="row1" class="tr_clone">
-                            <td><input type="text" class="form-control" name="codbarras" id="autocomplete_1"/></td>
-                            <!--<td><select name="modelo" class="form-control" id="modelo_1" disabled></select></td>
-                            <td><select name="serial" class="form-control" id="serial_1"></select></td>-->
-                            <td><input class="btn" tabindex="1" type="button" name="add"  id="add_1" value="+"></td>
+                        <tr id="row1">
+                            <td><select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select></td>
+                            <td><select name="modelo[]" class="form-control" id="modelo_1"></select></td>
+                            <td><select name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select></td>
+                            <td><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
+                            <td><input data-bot="add" class="btn btn-success" onclick="addRow()" tabindex="1" type="button" name="add"  id="add_1" value="+"></td>
                         </tr>
                     </table>
+
+                    <input class="btn btn btn-success" tabindex="1" type="submit" value="Cargar">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 </form>
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
                     <thead>
@@ -72,24 +77,145 @@
 @section('js')
 @push('scripts')
 <script>
-    $('#autocomplete_1').devbridgeAutocomplete({
-    serviceUrl: '/ajax/codbarras',
+var ajaxProveedor = {
+    url:'/ajax/proveedores',
+    data: function (params) {
+        var query ={
+            search: params.term,
+        }
+        return query;
+    },
     dataType: 'json',
-    onSelect: function (suggestion) {
-        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-    },
-    transformResult: function(response) {
-        console.log(response);
+    processResults: function(data){
+        console.log(data);
         return {
-            suggestions: $.map(response, function(dataItem) {
-                return { value: dataItem.text, data: dataItem.id };
-            })
+            results: data
+        }
+    }
+}
+var ajax =  {
+                url: '/ajax/codbarras',
+                data: function (params) {
+                  var query ={
+                    search: params.term
+                  }
+                  return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
         };
-    },
+var modelosAjax = {
+    url: '/ajax/productos',
+                data: function (params) {
+                  var query ={
+                    search: params.term
+                  }
+                  return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    console.log(data);
+                  return {
+                    results: data
+                  };
+                }
+};
+$(document).ready(function(){
+    $('#codbarras_1').select2({
+        placeholder: 'Código de barras',
+        ajax: {
+                url: '/ajax/codbarras',
+                data: function (params) {
+                  var query ={
+                    search: params.term
+                  }
+                  return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                        console.log(data);
+      // Tranforms the top-level key of the response object from 'items' to 'results'
+                  return {
+                    results: data
+                  };
+                }
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+        },
+          
     });
-
-
+    $('#proveedor_1').select2({
+        placeholder: 'Proveedores',
+        ajax:{
+            url:'/ajax/proveedores',
+            data: function (params) {
+                var query ={
+                    search: params.term,
+                }
+                return query;
+            },
+            dataType: 'json',
+            processResults: function(data){
+                console.log(data);
+                return {
+                    results: data
+                }
+            }
+        }
+    });
+})
+var i = 1;
+function addRow(){
+    console.log('work');
+    i++;
+    for(j = 1;j<i;j++){
+        $('#codbarras_'+i).select2("destroy");
+        $('#proveedor_'+i).select2("destroy");   
+    }
     
+    $('#tabla').append('<tr id="row'+i+'"><td style="width:25%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:25%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:25%"><select name="serial[]" class="form-control" id="serial_'+i+'"></select></td><td style="width:15%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+    for(j=1;j<i;j++){
+        $('#codbarras_'+i).select2({
+            placeholder: 'Código de barras',
+            ajax: ajax,
+        });
+        $('#proveedor_'+i).select2({
+            placeholder: 'Proveedores',
+            ajax: ajaxProveedor,
+        });
+    }
+    
+    $('[data-ex="added"]').on("select2:select",function(e){
+        $.getJSON('/ajax/productos',    {
+            mod: e.params.data.text
+        },function(data){
+            $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).select2({
+                placeholder: 'Modelo',
+                data: data
+            });
+        });
+    });
+}
+
+$('[data-ex="asd"]').on("select2:select",function(e){
+    console.log('work')
+    $.getJSON('/ajax/productos',    {
+            mod: e.params.data.text
+        },function(data){
+            $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).select2({
+                placeholder: 'Modelo',
+                data: data
+            });
+        });
+});
+
+$(document).on('click', '.btn_remove', function(){
+    var button_id = $(this).attr("id");
+    $('#row'+button_id).remove();
+}); 
 
 
 </script>

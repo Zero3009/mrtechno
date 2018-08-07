@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/ajax/productos', ['uses' => 'AjaxController@getProductos']);
 Route::get('/ajax/marcas', ['uses' => 'AjaxController@getMarcas']);
 Route::get('/ajax/codbarras', ['uses' => 'AjaxController@getCodbarras']);
+Route::get('/ajax/proveedores', ['uses' => 'AjaxController@getProveedores']);
 //FIN AJAX
 
 
@@ -50,3 +51,4 @@ Route::post('/admin/productos/eliminar', ['uses' => 'ProductosController@Elimina
 
 //STOCK
 Route::get('/admin/stock', ['uses' => 'StockController@Index']);
+Route::post('/admin/stock/nuevo/post', ['uses' => 'StockController@NewStock']);
