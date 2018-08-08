@@ -18,6 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/AdminLTE.min.css')}}">
   <link rel="stylesheet" href="/plugins/select2/select2.min.css">
+  <link rel="stylesheet" href="/plugins/jQuery/jquery-ui.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
@@ -27,7 +28,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- jQuery 3 -->
 <script src="/plugins/jQuery/jquery-3.2.1.min.js"></script>
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
-<script src="/plugins/arrive/arrive.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->

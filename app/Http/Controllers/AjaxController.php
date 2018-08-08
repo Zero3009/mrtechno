@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Productos;
 use App\Proveedores;
+use App\Stock;
 
 use Response;
 
@@ -70,5 +71,20 @@ class AjaxController extends Controller
 								->get();
 		}
 		return Response::json($ajax);	
+	}
+	public function getSeriales(Request $request)
+	{
+		if($request->search)
+		{
+			$ajax = Stock::select('stock.serial as text','stock.id as id')
+							->where('stock.estado','=', true)
+							->where('stock.serial','ilike', '%'.$request->search.'%')
+							->get();
+		}else{
+			$ajax = Stock::select('stock.serial as text','stock.id as id')
+							->where('stock.estado','=',true)
+							->get();
+		}
+		return Response::json($ajax);
 	}
 }

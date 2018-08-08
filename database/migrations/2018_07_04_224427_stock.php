@@ -21,8 +21,10 @@ class Stock extends Migration
             $table->integer('provs_id')->unsigned();
             $table->foreign('provs_id')->references('id')->on('provs')->onDelete('restrict')->onUpdate('restrict');
             $table->string('serial', 100)->unique()->nullable();
-            $table->decimal('precioEntrada',8,2);
-            $table->decimal('precioSalida',8,2)->nullable();
+            $table->decimal('precioEntrada',8,0);
+            $table->decimal('precioSalida',8,0)->nullable();
+            $table->date('fechaEntrada');
+            $table->date('fechaSalida')->nullable();
             $table->boolean('disponible')->default(true);
             $table->boolean('estado')->default(true);
         });

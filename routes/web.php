@@ -21,6 +21,7 @@ Route::get('/ajax/productos', ['uses' => 'AjaxController@getProductos']);
 Route::get('/ajax/marcas', ['uses' => 'AjaxController@getMarcas']);
 Route::get('/ajax/codbarras', ['uses' => 'AjaxController@getCodbarras']);
 Route::get('/ajax/proveedores', ['uses' => 'AjaxController@getProveedores']);
+Route::get('/ajax/seriales', ['uses' => 'AjaxController@getSeriales']);
 //FIN AJAX
 
 
