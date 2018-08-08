@@ -17,7 +17,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/vendor/Ionicons/css/ionicons.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/AdminLTE.min.css')}}">
-  <link rel="stylesheet" href="/plugins/select2/select2.min.css">
+  <link rel="stylesheet" href="/plugins/select2/select2.css">
   <link rel="stylesheet" href="/plugins/jQuery/jquery-ui.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
@@ -34,7 +34,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/vendor/adminlte/dist/js/adminlte.min.js"></script>
 
 <script src="/plugins/jQuery/jquery-ui.min.js"></script>
-<script src="/plugins/select2/select2.full.min.js"></script>
+<script src="/plugins/select2/select2.full.js"></script>
 
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
@@ -75,7 +75,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-black sidebar-collapse">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -103,7 +103,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
+              <span class="label label-success">0</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
@@ -139,7 +139,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning">0</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
@@ -162,7 +162,7 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
+              <span class="label label-danger">0</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
@@ -199,14 +199,14 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="dist/img/user2-160x160.jpg" class="user-image" alt=" ">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">Matías Ramírez</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt=" ">
 
                 <p>
                   Alexander Pierce - Web Developer
@@ -280,7 +280,7 @@ desired effect
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
 
-        <li class="header">HEADER</li>
+        <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Gestionar Stock</span>
@@ -326,12 +326,12 @@ desired effect
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <!-- To the right -->
+    <!-- To the right 
     <div class="pull-right hidden-xs">
       Anything you want
     </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    Default to the left -->
+    <strong>Copyright &copy; 2018 <a href="#">MR Techno</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

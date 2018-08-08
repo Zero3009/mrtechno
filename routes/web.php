@@ -30,6 +30,7 @@ Route::get('/admin/stock', 'StockController@IndexStock');
 //DATATABLES
 Route::get('/datatables/getproveedores', ['uses' => 'DatatablesController@GetProveedores']);
 Route::get('/datatables/getproductos', ['uses' => 'DatatablesController@GetProductos']);
+Route::get('/datatables/getstock', ['uses' => 'DatatablesController@GetStock']);
 
 //PROVEEDORES
 Route::get('/admin/proveedores', 'ProveedoresController@Index');
@@ -53,3 +54,4 @@ Route::post('/admin/productos/eliminar', ['uses' => 'ProductosController@Elimina
 //STOCK
 Route::get('/admin/stock', ['uses' => 'StockController@Index']);
 Route::post('/admin/stock/nuevo/post', ['uses' => 'StockController@NewStock']);
+Route::get('/admin/stock/editar/{id}', ['uses' => 'StockController@EditStockView']);

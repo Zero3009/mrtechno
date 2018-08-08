@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Stock;
 use Validator;
+use View;
 
 class StockController extends Controller
 {
@@ -14,7 +15,8 @@ class StockController extends Controller
     	return view('stock.stock');
     }
     public function NewStock(Request $request)
-    {
+    {   
+        //return $request->all();
     	DB::beginTransaction();
     	try 
         {
@@ -23,23 +25,32 @@ class StockController extends Controller
                 'modelo' => 'required',
                 'proveedor' => 'required',
                 'precioEntrada' => 'required',
-                'fecha' => 'required'
+                'fecha' => 'required',
+                'cantidadseriales' => 'required'
             ]);
             if ($validator->fails()) {
                 return redirect()
                             ->back()
                             ->withErrors($validator)
                             ->withInput();
-            }
-            for ($i=0; $i < sizeof($request->serial); $i++) { 
-            	$query = new Stock;
-                $query->prods_id = $request->modelo[0];
-                $query->provs_id = $request->proveedor[0];
-                $query->serial = $request->serial[$i];
-                $query->precioEntrada = $request->precioEntrada[0];
-                $query->fechaEntrada =$request->fecha[0];
-            $query->save();
-            }
+            }   
+
+
+            $g = 0;
+                for ($i=0; $i < sizeof($request->cantidadseriales); $i++) {
+                    for($h = 0;$h < $request->cantidadseriales[$i];$h++){                        
+                        
+                        $query = new Stock;
+                            $query->prods_id = $request->modelo[$i];
+                            $query->provs_id = $request->proveedor[$i];
+                            $query->serial = $request->serial[$g];
+                            $query->precioEntrada = $request->precioEntrada[$i];
+                            $query->fechaEntrada =$request->fecha[$i];
+                        $query->save();
+                        $g = $g + 1;
+                    }
+                }
+            
             DB::commit();
             return redirect('/admin/stock');
         }
@@ -51,5 +62,13 @@ class StockController extends Controller
                 ->withErrors('Se ha producido un errro: ( ' . $e->getCode() . ' ): ' . $e->getMessage().' - Copie este texto y envielo a informática');
         }
     
+    }
+    public function EditStockView($id)
+    {
+        $stock = Stock::select('stock.id','prods.codbarras','stock.serial','provs.nombre','prods.modelo','prods.id as prodsid')
+                        ->join('provs','stock.provs_id','=','provs.id')
+                        ->join('prods','stock.prods_id','=','prods.id')
+                        ->where('stock.id','=', $id)->first();
+        return View::make('stock.stock_editar')->with('stock', $stock);
     }
 }

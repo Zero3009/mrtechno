@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="background: #D7D7D7">
                 <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal">
                     <table class="table table-striped table-bordered" name="tabla" id="tabla">
                         <tr>
@@ -30,7 +30,7 @@
                         <tr id="row1">
                             <td style="width:18%"><select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select></td>
                             <td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_1"></select></td>
-                            <td style="width:20%"><select name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales" value="0" id="cantidadseriales_1"></td>
+                            <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
                             <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
                             <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
                             <td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true" style="margin-bottom: 10px;margin-top: -7px"></td>
@@ -41,7 +41,7 @@
                     <input class="btn btn btn-success" tabindex="1" type="submit" value="Cargar">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 </form>
-                <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
+                <table class="table table-striped table-bordered tabla-filtro" width="100%" id="table">
                     <thead>
                         <tr>
                             <th>Código de barras</th>
@@ -53,6 +53,7 @@
                             <th>Precio de entrada</th>
                             <th>Precio de salida</th>
                             <th>Proveedor</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                 </table>
@@ -65,7 +66,7 @@
 <div class="modal fade" id="delete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <form method="POST" action="/admin/proveedores/eliminar" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="/admin/stock/editar" accept-charset="UTF-8" class="form-horizontal">
                 <div class="modal-header" style="background: #4682B4; color: #FFFFFF;">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="titulo"> Deshabilitar area</h4>
@@ -135,6 +136,28 @@ var modelosAjax = {
                 }
 };
 $(document).ready(function(){
+    var table = $('#table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": '/datatables/getstock',
+        "columns":[
+            {data: 'codbarras', name:'prods.codbarras'},
+            {data: 'marca', name:'prods.marca'},
+            {data: 'modelo', name:'prods.modelo'},
+            {data: 'serial', name:'serial'},
+            {data: 'fechaEntrada', name:'fechaEntrada'},
+            {data: 'fechaSalida', name:'fechaSalida'},
+            {data: 'precioEntrada', name:'precioEntrada'},
+            {data: 'precioSalida', name:'precioSalida'},
+            {data: 'nombre', name:'provs.nombre'},
+            {data: 'action', name: 'action', orderable: false, searchable: false}
+
+        ],
+        "language":{
+                    url: "{!! asset('/plugins/datatables/lenguajes/spanish.json') !!}"
+        },
+        "bFilter": true,
+    });
     $("#fecha_1").datepicker({
                     dateFormat: 'yy-mm-dd',
                     todayHighlight: true,
@@ -202,7 +225,7 @@ function addRow(){
         $('#fecha_'+i).datepicker("destroy");
     }
     
-    $('#tabla').append('<tr id="row'+i+'"><td style="width:18%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:20%"><select name="serial[]" class="form-control" id="serial_'+i+'" multiple="multiple"></select></td><td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_'+i+'"></td><td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" name="fecha[]" type="text" class="form-control" id="fecha_'+i+'" readonly="true" style="margin-bottom: 10px;margin-top: -7px"></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+    $('#tabla').append('<tr id="row'+i+'"><td style="width:18%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:20%"><select  data-hid="hidadded" data-row="'+i+'" name="serial[]" class="form-control" id="serial_'+i+'" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_'+i+'"></td><td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_'+i+'"></td><td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" name="fecha[]" type="text" class="form-control" id="fecha_'+i+'" readonly="true" style="margin-bottom: 10px;margin-top: -7px"></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
     for(j=1;j<i;j++){
         $('#serial_'+i).select2();
         $('#modelo_'+i).select2();
@@ -261,6 +284,20 @@ function addRow(){
 
         });
     });
+    $('[data-hid="hidadded"]').on("select2:select", function(e){
+        var test = $('#serial_'+e.delegateTarget.attributes[1].nodeValue).val() + '';
+        var test2 = test.split(",");
+        $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(test2.length);
+    });
+    $('[data-hid="hidadded"]').on("select2:unselect",function(e){
+        var test = $('#serial_'+e.delegateTarget.attributes[1].nodeValue).val() + '';
+        if(test== ""){
+            $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(0);    
+        }else{
+            var test2 = test.split(",");
+            $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(test2.length);
+        }
+    });
 }
 
 $('[data-ex="asd"]').on("select2:select",function(e){
@@ -297,15 +334,19 @@ $('[data-ex="asd"]').on("select2:select",function(e){
 
     });
 });
-$('#serial_1').on("select2:select", function(e){
-    $('#cantidadseriales_1').val(parseInt($('#cantidadseriales_1').val()) + 1);
-
-    alert($('#cantidadseriales_1').val());
+$('[data-hid="hidorigin"]').on("select2:select", function(e){
+    var test = $('#serial_1').val() + '';
+    var test2 = test.split(",");
+    $('#cantidadseriales_1').val(test2.length);
 });
-$('#serial_1').on("select2:unselect",function(e){
-    $('#cantidadseriales_1').val(parseInt($('#cantidadseriales_1').val()) - 1);
-
-    alert($('#cantidadseriales_1').val());
+$('[data-hid="hidorigin"]').on("select2:unselect",function(e){
+    var test = $('#serial_1').val() + '';
+    if(test== ""){
+        $('#cantidadseriales_1').val(0);    
+    }else{
+        var test2 = test.split(",");
+        $('#cantidadseriales_1').val(test2.length);
+    }
 });
 
 $(document).on('click', '.btn_remove', function(){
