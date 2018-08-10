@@ -3,7 +3,7 @@
 @section('main-content')
 <form method="POST" action="/admin/productos/editar/post" accept-charset="UTF-8" class="form-horizontal">
 	<div class="row">
-	    <div class="col-md-10 col-md-offset-1" >
+	    <div class="col-md-12" >
 	        <div class="panel panel-default">
 	            <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
 	                <div class="row">
@@ -12,7 +12,7 @@
 	                    </div>
 	            	</div>
 	            </div>
-	            <div class="panel-body">
+	            <div class="panel-body" style="background: #D7D7D7">
                     <div class="form-group">
                         <label class="control-label col-sm-2">Tipo:</label>
                         <div class="col-sm-4">

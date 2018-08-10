@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @section('main-content')
 <div class="row">
-    <div class="col-md-10 col-md-offset-1" >
+    <div class="col-md-12" >
         <div class="panel panel-default">
             <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                 <div class="row">
                     <div class="col-md-4" style="float: left;">
-                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar etiquetas</h3>
+                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar productos</h3>
                     </div>
 
                     <div class="col-md-8" style="float: right;">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="background: #D7D7D7">
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
                     <thead>
                         <tr>

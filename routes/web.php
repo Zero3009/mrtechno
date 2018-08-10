@@ -55,3 +55,4 @@ Route::post('/admin/productos/eliminar', ['uses' => 'ProductosController@Elimina
 Route::get('/admin/stock', ['uses' => 'StockController@Index']);
 Route::post('/admin/stock/nuevo/post', ['uses' => 'StockController@NewStock']);
 Route::get('/admin/stock/editar/{id}', ['uses' => 'StockController@EditStockView']);
+Route::post('/admin/stock/editar/post', ['uses' => 'StockController@EditStock']);

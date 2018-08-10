@@ -7,6 +7,7 @@ use DB;
 use App\Stock;
 use Validator;
 use View;
+use Redirect;
 
 class StockController extends Controller
 {
@@ -65,10 +66,31 @@ class StockController extends Controller
     }
     public function EditStockView($id)
     {
-        $stock = Stock::select('stock.id','prods.codbarras','stock.serial','provs.nombre','prods.modelo','prods.id as prodsid')
+        $stock = Stock::select('stock.id','prods.codbarras','stock.serial as serial','provs.nombre','prods.modelo','prods.id as prodsid', 'stock.fechaEntrada', 'stock.precioEntrada')
                         ->join('provs','stock.provs_id','=','provs.id')
                         ->join('prods','stock.prods_id','=','prods.id')
                         ->where('stock.id','=', $id)->first();
         return View::make('stock.stock_editar')->with('stock', $stock);
+    }
+    public function EditStock(Request $request)
+    {
+        $this->validate($request, [
+            'codbarras' => 'required',
+            'modelo' => 'required',
+            'fecha' => 'required',
+            'precioEntrada' => 'required',
+            'proveedor' => 'required',
+            'id' => 'required'
+        ]);
+
+        $post = $request->all();
+        Stock::find($post['id'])->update([
+            'modelo' => $post['modelo'],
+            'fechaEntrada' => $post['fecha'],
+            'precioEntrada' => $post['precioEntrada'],
+            'serial' => $post['serial'],
+            'provs_id' => $post['proveedor']
+        ]);
+        return Redirect::to('/admin/stock')->with('status', 'Se ha editado correctamente la etiqueta.');
     }
 }

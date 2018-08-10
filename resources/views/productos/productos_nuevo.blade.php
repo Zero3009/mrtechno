@@ -3,7 +3,7 @@
 @section('main-content')
 <form method="POST" action="/admin/productos/nuevo/post" accept-charset="UTF-8" class="form-horizontal">
 	<div class="row">
-	    <div class="col-md-10 col-md-offset-1" >
+	    <div class="col-md-12" >
 	        <div class="panel panel-default">
 	            <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
 	                <div class="row">

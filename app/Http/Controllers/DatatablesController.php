@@ -38,7 +38,7 @@ class DatatablesController extends Controller
 	}
 	public function getStock()
 	{
-		$retornar = Stock::select(['stock.id as id','prods.codbarras as codbarras','prods.marca as marca','prods.modelo as modelo','stock.serial as serial','stock.fechaEntrada as fechaEntrada','stock.fechaSalida as fechaSalida','stock.precioEntrada as precioEntrada','stock.precioSalida as precioSalida','provs.nombre as nombre'])
+		$retornar = Stock::select(['stock.id','prods.codbarras','prods.marca','prods.modelo','stock.serial','stock.fechaEntrada','stock.fechaSalida','stock.precioEntrada','stock.precioSalida','provs.nombre'])
 							->join('prods','stock.prods_id','=','prods.id')
 							->join('provs','stock.provs_id','=','provs.id')
 							->where('stock.estado','=',true);

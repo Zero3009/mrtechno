@@ -6,12 +6,7 @@
             <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                 <div class="row">
                     <div class="col-md-4" style="float: left;">
-                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar proveedores</h3>
-                    </div>
-
-                    <div class="col-md-8" style="float: right;">
-                        <a class="btn btn-success" href="/admin/proveedores/nuevo" style="float: right;">
-                        <i class="fa fa-plus"></i> Nuevo</a>
+                        <h3 class="panel-title" style="margin-top: 10px;">Gestionar stock</h3>
                     </div>
                 </div>
             </div>
@@ -33,7 +28,7 @@
                             <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
                             <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
                             <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
-                            <td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true" style="margin-bottom: 10px;margin-top: -7px"></td>
+                            <td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true"></td>
                             <td style="width:10%"><input data-bot="add" class="btn btn-success" onclick="addRow()" tabindex="1" type="button" name="add"  id="add_1" value="+"></td>
                         </tr>
                     </table>
@@ -147,7 +142,7 @@ $(document).ready(function(){
             {data: 'serial', name:'serial'},
             {data: 'fechaEntrada', name:'fechaEntrada'},
             {data: 'fechaSalida', name:'fechaSalida'},
-            {data: 'precioEntrada', name:'precioEntrada'},
+            {data: 'precioEntrada', name:'precioEntrada', render: $.fn.dataTable.render.number('.', ',', 2 ,"$")},
             {data: 'precioSalida', name:'precioSalida'},
             {data: 'nombre', name:'provs.nombre'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -225,7 +220,7 @@ function addRow(){
         $('#fecha_'+i).datepicker("destroy");
     }
     
-    $('#tabla').append('<tr id="row'+i+'"><td style="width:18%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:20%"><select  data-hid="hidadded" data-row="'+i+'" name="serial[]" class="form-control" id="serial_'+i+'" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_'+i+'"></td><td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_'+i+'"></td><td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" name="fecha[]" type="text" class="form-control" id="fecha_'+i+'" readonly="true" style="margin-bottom: 10px;margin-top: -7px"></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+    $('#tabla').append('<tr id="row'+i+'"><td style="width:18%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:20%"><select  data-hid="hidadded" data-row="'+i+'" name="serial[]" class="form-control" id="serial_'+i+'" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_'+i+'"></td><td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_'+i+'"></td><td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" name="fecha[]" type="text" class="form-control" id="fecha_'+i+'" readonly="true"></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
     for(j=1;j<i;j++){
         $('#serial_'+i).select2();
         $('#modelo_'+i).select2();
@@ -274,7 +269,10 @@ function addRow(){
                     },
                     dataType: 'json',
                     processResults: function(data){
-                        console.log(data);
+                        data.forEach(function(e) {
+                            e.disabled = true;
+                        });
+                        
                         return {
                             results: data
                         }
@@ -324,7 +322,10 @@ $('[data-ex="asd"]').on("select2:select",function(e){
             },
             dataType: 'json',
             processResults: function(data){
-                console.log(data);
+                data.forEach(function(e) {
+                     e.disabled = true;  
+
+                });
                 return {
                     results: data
                 }
