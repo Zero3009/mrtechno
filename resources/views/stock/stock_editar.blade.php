@@ -30,7 +30,7 @@
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Serial:</label>
                     	<div class="col-sm-4">
-                    		<input class="form-control" id="serial" name="serial" type="text" value="{{$stock->serial}}">
+                    		<select id="serial" class="form-control" style="width: 100%" name="serial" type="text" required></select>
                     	</div>
                     	<label class="control-label col-sm-2">Fecha:</label>
                     	<div class="col-sm-4">	
@@ -64,9 +64,6 @@
 @push('scripts')
 <script>
 	$(document).ready(function(){
-			//console.log("{{$stock->codbarras}}")
-			//console.log(["{{$stock->codbarras}}"]);
-			//$('#serial').append('<option id="1" selected>'+" {{$stock->serial}}"+'</option>');
 			$('#proveedor').select2();
 			$('#modelo').select2();
 			
@@ -110,6 +107,23 @@
                         $('#fecha').attr('value',dateText);
                     }
                 }).datepicker();
+		$.getJSON('/ajax/seriales',null,function(data){
+				var filteredSerial = data.filter(function(item){
+					if(item.text == "{{$stock->serial}}") {
+						$('#serial').append('<option value="'+item.id+'" selected>'+item.text+'</option>');
+					}else{
+						item.disabled = true;
+						return item;
+					}
+				});
+				console.log(filteredSerial);
+				$('#serial').select2({
+					tags: true,
+					placeholder: 'Serial',
+					data: filteredSerial
+				});
+		});
+
 	})
 	$('#codbarras').on("select2:select", function(e){
 		$('#modelo').empty().trigger("change");
@@ -123,7 +137,30 @@
 	    });
 	});
 
-
+jQuery(function($) {
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '&#x3c;Ant',
+        nextText: 'Sig&#x3e;',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi&eacute;rcoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mi&eacute;', 'Juv', 'Vie', 'S&aacute;b'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'S&aacute;'],
+        weekHeader: 'Sm',
+        dateFormat: 'yy/mm/dd',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
 
 </script>
 @endsection

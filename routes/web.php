@@ -31,6 +31,7 @@ Route::get('/admin/stock', 'StockController@IndexStock');
 Route::get('/datatables/getproveedores', ['uses' => 'DatatablesController@GetProveedores']);
 Route::get('/datatables/getproductos', ['uses' => 'DatatablesController@GetProductos']);
 Route::get('/datatables/getstock', ['uses' => 'DatatablesController@GetStock']);
+Route::get('/datatables/getproveedoreseliminados', ['uses' => 'DatatablesController@GetProveedoresEliminados']);
 
 //PROVEEDORES
 Route::get('/admin/proveedores', 'ProveedoresController@Index');
@@ -56,3 +57,9 @@ Route::get('/admin/stock', ['uses' => 'StockController@Index']);
 Route::post('/admin/stock/nuevo/post', ['uses' => 'StockController@NewStock']);
 Route::get('/admin/stock/editar/{id}', ['uses' => 'StockController@EditStockView']);
 Route::post('/admin/stock/editar/post', ['uses' => 'StockController@EditStock']);
+Route::post('/admin/stock/eliminar', ['uses' => 'StockController@EliminarStock']);
+//FIN STOCK
+
+//RECUPERACION
+Route::get('/admin/recuperacion/proveedores', ['uses' => 'recuperacionController@IndexProveedores']);
+//FIN RECUPERACION

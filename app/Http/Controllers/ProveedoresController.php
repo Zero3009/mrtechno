@@ -69,7 +69,7 @@ class ProveedoresController extends Controller
                 $query->tel = $request->tel;
             $query->save();
             DB::commit();
-            return redirect('/admin/proveedores');
+            return redirect('/admin/proveedores')->with('status', 'Proveedor creado correctamente');
         }
         catch(Exception $e)
         {

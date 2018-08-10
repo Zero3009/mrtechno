@@ -11,6 +11,19 @@
                 </div>
             </div>
             <div class="panel-body" style="background: #D7D7D7">
+                <!-- Mensajes de exito-->
+                @if (session('status'))
+                    <div class="alert alert-success" id="ocultar">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                @if(count($errors)>0)
+                    <div class="alert alert-warning" role="alert" id="ocultar2">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                    </div>
+                @endif 
                 <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal">
                     <table class="table table-striped table-bordered" name="tabla" id="tabla">
                         <tr>
@@ -61,13 +74,13 @@
 <div class="modal fade" id="delete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <form method="POST" action="/admin/stock/editar" accept-charset="UTF-8" class="form-horizontal">
-                <div class="modal-header" style="background: #4682B4; color: #FFFFFF;">
+            <form method="POST" action="/admin/stock/eliminar" accept-charset="UTF-8" class="form-horizontal">
+                <div class="modal-header" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="titulo"> Deshabilitar area</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="help-block">¿Esta seguro que desea deshabilitar este proveedor?</p>
+                    <p class="help-block">¿Esta seguro que desea eliminar este registro de stock?</p>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="id" class="id">
@@ -355,6 +368,16 @@ $(document).on('click', '.btn_remove', function(){
     $('#row'+button_id).remove();
 }); 
 
+$('#table').on('draw.dt', function () {
+    $(".delete").click(function(){
+        $('#delete').modal();
+        var id = $(this).data('id');
+        console.log(id);
+        $("#titulo").html(" Eliminar del stock "+$(this).closest("tr").children("td").eq(0).html());
+        $(".id").val(id);
+    });
+});
+
 jQuery(function($) {
     $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -378,6 +401,9 @@ jQuery(function($) {
         yearSuffix: ''
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
+});
+$("#ocultar").fadeTo(8000, 500).slideUp(500, function(){
+    $("ocultar").alert('close');
 });
 </script>
 

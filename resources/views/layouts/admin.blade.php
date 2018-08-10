@@ -289,7 +289,7 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/stock">Alta</a></li>
+            <li class="{{ Request::segment(2) === 'stock' ? 'active' : null }}"><a href="/admin/stock">Alta</a></li>
             <li><a href="#">Salida</a></li>
           </ul>
         </li>
@@ -297,6 +297,18 @@ desired effect
         <li class="{{ Request::segment(2) === 'productos' ? 'active' : null }}">
           <a href="/admin/productos"><i class="fa fa-hdd-o"></i> <span>Gestionar productos</span>
           </a>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-trash"></i><span>Recuperar eliminados</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/admin/borrados/stock">Stock eliminado</a></li>
+            <li><a href="/admin/borrados/productos">Productos eliminados</a></li>
+            <li><a href="/admin/recuperacion/proveedores">Proveedores eliminados</a></li>
+          </ul>
         </li>
         
       </ul>

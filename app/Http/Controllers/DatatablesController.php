@@ -48,4 +48,15 @@ class DatatablesController extends Controller
 						});
 		return $datatables->make(true);
 	}
+	public function getProveedoresEliminados()
+	{
+		$retornar = Proveedores::select(['provs.id', 'provs.nombre', 'provs.tel'])
+					->where('estado','=', false);
+		$datatables = app('datatables')
+						->of($retornar)
+						->addColumn('action', function($retornar){
+							return '<a href="#" class="btn btn-xs btn-primary recuperar" data-id="'.$retornar->id.'"><i class="glyphicon glyphicon-repeat"></i></a>';
+						});
+		return $datatables->make(true); 
+	}
 }

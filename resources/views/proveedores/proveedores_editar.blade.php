@@ -13,6 +13,11 @@
 	            	</div>
 	            </div>
 	            <div class="panel-body" style="background: #D7D7D7">
+	            	@if (session('status'))
+	                    <div class="alert alert-success" id="ocultar">
+	                        {{ session('status') }}
+	                    </div>
+                	@endif
                     <div class="form-group">
                         <label class="control-label col-sm-2">Nombre:</label>
                         <div class="col-sm-4">
@@ -34,3 +39,11 @@
     </div>
 </form>
 @stop
+@push('scripts')
+@section('js')
+<script>
+$("#ocultar").fadeTo(8000, 500).slideUp(500, function(){
+    $("ocultar").alert('close');
+});
+</script>
+@endsection

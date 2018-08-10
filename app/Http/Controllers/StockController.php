@@ -30,6 +30,7 @@ class StockController extends Controller
                 'cantidadseriales' => 'required'
             ]);
             if ($validator->fails()) {
+                //return 'hola';
                 return redirect()
                             ->back()
                             ->withErrors($validator)
@@ -53,7 +54,7 @@ class StockController extends Controller
                 }
             
             DB::commit();
-            return redirect('/admin/stock');
+            return redirect('/admin/stock')->with('status', 'Se ha agregado correctamente el/los registro/s.');
         }
         catch(Exception $e)
         {
@@ -91,6 +92,18 @@ class StockController extends Controller
             'serial' => $post['serial'],
             'provs_id' => $post['proveedor']
         ]);
-        return Redirect::to('/admin/stock')->with('status', 'Se ha editado correctamente la etiqueta.');
+        return Redirect::to('/admin/stock')->with('status', 'Se ha editado correctamente el registro.');
+    }
+    public function EliminarStock(Request $request)
+    {
+        //return $request['id'];
+        $this->validate($request, [
+            'id' => 'required|integer',
+        ]);
+
+        $queryinfo = Stock::find($request['id']);
+            $queryinfo->estado = false;
+        $queryinfo->save();
+        return Redirect::to('/admin/stock')->with('status', 'Se ha eliminado correctamente el registro.');
     }
 }
