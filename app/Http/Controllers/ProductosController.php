@@ -87,6 +87,6 @@ class ProductosController extends Controller
         $queryinfo = Productos::find($request['id']);
             $queryinfo->estado = false;
         $queryinfo->save();
-        return Redirect::to('/admin/proveedores')->with('status', 'Se ha eliminado correctamente el usuario.');
+        return Redirect::to('/admin/productos')->with('status', 'Se ha eliminado correctamente el producto.');
     }
 }

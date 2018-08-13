@@ -127,6 +127,9 @@
         </div>
     </div>
 </div>
+<!--<style>
+    #table { font-size: 0.8em; }
+</style>-->
 @stop
 @section('js')
 @push('scripts')

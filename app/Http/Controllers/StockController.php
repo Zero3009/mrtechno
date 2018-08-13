@@ -85,7 +85,7 @@ class StockController extends Controller
         ]);
 
         $post = $request->all();
-        if($request->input('fechaSalida')){
+        if($request->input('fechaSalida') && $request->input('precioSalida')){
             Stock::find($post['id'])->update([
                 'modelo' => $post['modelo'],
                 'fechaEntrada' => $post['fecha'],
@@ -101,7 +101,9 @@ class StockController extends Controller
                 'fechaEntrada' => $post['fecha'],
                 'precioEntrada' => $post['precioEntrada'],
                 'serial' => $post['serial'],
-                'provs_id' => $post['proveedor']
+                'provs_id' => $post['proveedor'],
+                'precioSalida' => null,
+                'fechaSalida' => null
             ]);
         }
         return Redirect::to('/admin/stock')->with('status', 'Se ha editado correctamente el registro.');

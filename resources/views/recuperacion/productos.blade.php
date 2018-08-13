@@ -6,7 +6,7 @@
             <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
                 <div class="row">
                     <div class="col-md-4" style="float: left;">
-                        <h3 class="panel-title" style="margin-top: 10px;">Restaurar proveedores</h3>
+                        <h3 class="panel-title" style="margin-top: 10px;">Restaurar productos</h3>
                     </div>
                 </div>
             </div>
@@ -19,8 +19,9 @@
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="tabla">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Telefono</th>
+                            <th>Tipo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -34,7 +35,7 @@
 <div class="modal fade" id="recuperar" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <form method="POST" action="/admin/recuperacion/proveedores/post" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="/admin/recuperacion/productos/post" accept-charset="UTF-8" class="form-horizontal">
                 <div class="modal-header" style="background: #4682B4; color: #FFFFFF;">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="titulo"> Deshabilitar area</h4>
@@ -60,10 +61,11 @@ $(document).ready(function () {
     var tabla = $('#tabla').DataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": '/datatables/getproveedoreseliminados',
+        "ajax": '/datatables/getproductoseliminados',
         "columns":[
-            {data: 'nombre', name:'nombre'},
-            {data: 'tel', name:'tel'},
+            {data: 'tipo', name:'tipo'},
+            {data: 'marca', name:'marca'},
+            {data: 'modelo', name:'modelo'},
             {data: 'action', name: 'action', orderable: false}
         ],
         "language":{

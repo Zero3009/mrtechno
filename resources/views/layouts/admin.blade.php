@@ -38,6 +38,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('/plugins/datatables/dataTables.bootstrap.js') }}"></script>
+<script src="{{ asset('/plugins/chartjs/Chart.bundle.js')}} "></script>
 <!--<script src="{{ asset('/plugins/datatables/datatables.min.js') }}"></script>-->
 
 
@@ -82,7 +84,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="/admin/inicio" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>M</b>T</span>
       <!-- logo for regular state and mobile devices -->
@@ -282,6 +284,7 @@ desired effect
 
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
+        <li class="{{ Request::segment(2) === 'inicio' ? 'active' : null }}"><a href="/admin/inicio"><i class="fa fa-bar-chart"></i><span>Inicio</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Gestionar Stock</span>
             <span class="pull-right-container">
@@ -305,8 +308,8 @@ desired effect
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/borrados/stock">Stock eliminado</a></li>
-            <li><a href="/admin/borrados/productos">Productos eliminados</a></li>
+            <li><a href="/admin/recuperacion/stock">Stock eliminado</a></li>
+            <li><a href="/admin/recuperacion/productos">Productos eliminados</a></li>
             <li><a href="/admin/recuperacion/proveedores">Proveedores eliminados</a></li>
           </ul>
         </li>

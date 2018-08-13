@@ -7,6 +7,7 @@ use App\Productos;
 use App\Proveedores;
 use App\Stock;
 
+use DB;
 use Response;
 
 class AjaxController extends Controller
@@ -85,6 +86,28 @@ class AjaxController extends Controller
 							->where('stock.estado','=',true)
 							->get();
 		}
+		return Response::json($ajax);
+	}
+	public function LineEntrada()
+	{
+
+		$ajax = //\DB::table('stock')
+				Stock::groupBy('fechaEntrada')
+					->selectRaw('sum("stock"."precioEntrada") AS y, "stock"."fechaEntrada" as t')
+					->where('estado','=',true)
+					->orderBy('fechaEntrada')
+					->get();
+		return Response::json($ajax);
+	}
+	public function LineSalida()
+	{
+
+		$ajax = //\DB::table('stock')
+				Stock::groupBy('fechaSalida')
+					->selectRaw('sum("stock"."precioSalida") AS y, "stock"."fechaSalida" as t')
+					->where('estado','=',true)
+					->orderBy('fechaSalida')
+					->get();
 		return Response::json($ajax);
 	}
 }

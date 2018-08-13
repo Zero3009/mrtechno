@@ -16,12 +16,18 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+//INICIO
+Route::get('/admin/inicio', ['uses' => 'InicioController@Index']);
+//FIN INICIO
+
 //AJAX
 Route::get('/ajax/productos', ['uses' => 'AjaxController@getProductos']);
 Route::get('/ajax/marcas', ['uses' => 'AjaxController@getMarcas']);
 Route::get('/ajax/codbarras', ['uses' => 'AjaxController@getCodbarras']);
 Route::get('/ajax/proveedores', ['uses' => 'AjaxController@getProveedores']);
 Route::get('/ajax/seriales', ['uses' => 'AjaxController@getSeriales']);
+Route::get('/ajax/chart', ['uses' => 'AjaxController@LineEntrada']);
+Route::get('/ajax/linesalida',['uses' => 'AjaxController@LineSalida']);
 //FIN AJAX
 
 
@@ -32,6 +38,7 @@ Route::get('/datatables/getproveedores', ['uses' => 'DatatablesController@GetPro
 Route::get('/datatables/getproductos', ['uses' => 'DatatablesController@GetProductos']);
 Route::get('/datatables/getstock', ['uses' => 'DatatablesController@GetStock']);
 Route::get('/datatables/getproveedoreseliminados', ['uses' => 'DatatablesController@GetProveedoresEliminados']);
+Route::get('/datatables/getproductoseliminados',['uses' => 'DatatablesController@GetProductosEliminados']);
 
 //PROVEEDORES
 Route::get('/admin/proveedores', 'ProveedoresController@Index');
@@ -62,5 +69,8 @@ Route::post('/admin/stock/salida',['uses' => 'StockController@SalidaStock']);
 //FIN STOCK
 
 //RECUPERACION
-Route::get('/admin/recuperacion/proveedores', ['uses' => 'recuperacionController@IndexProveedores']);
+Route::get('/admin/recuperacion/proveedores', ['uses' => 'RecuperacionController@IndexProveedores']);
+Route::post('/admin/recuperacion/proveedores/post', ['uses' => 'RecuperacionController@ProveedoresRecuperacion']);
+Route::get('/admin/recuperacion/productos', ['uses' => 'RecuperacionController@IndexProductos']);
+Route::post('/admin/recuperacion/productos/post', ['uses' => 'RecuperacionController@ProductosRecuperacion']);
 //FIN RECUPERACION
