@@ -58,6 +58,7 @@ Route::post('/admin/stock/nuevo/post', ['uses' => 'StockController@NewStock']);
 Route::get('/admin/stock/editar/{id}', ['uses' => 'StockController@EditStockView']);
 Route::post('/admin/stock/editar/post', ['uses' => 'StockController@EditStock']);
 Route::post('/admin/stock/eliminar', ['uses' => 'StockController@EliminarStock']);
+Route::post('/admin/stock/salida',['uses' => 'StockController@SalidaStock']);
 //FIN STOCK
 
 //RECUPERACION

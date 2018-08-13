@@ -32,23 +32,33 @@
                     	<div class="col-sm-4">
                     		<select id="serial" class="form-control" style="width: 100%" name="serial" type="text" required></select>
                     	</div>
-                    	<label class="control-label col-sm-2">Fecha:</label>
-                    	<div class="col-sm-4">	
-                    		<input placeholder="Fecha:" value="{{$stock->fechaEntrada}}" type="text" class="form-control" id="fecha" name="fecha"readonly="true" >
-                    	</div>
-                    </div>
-                    <div class="form-group">
                     	<label class="control-label col-sm-2">Proveedor:</label>
                     	<div class="col-sm-4">
                     		<select id="proveedor" class="form-control" style="width: 100%" name="proveedor" type="text" required></select>
                     	</div>
                     </div>
                     <div class="form-group">
+                    	<label class="control-label col-sm-2">Fecha Entrada:</label>
+                    	<div class="col-sm-4">	
+                    		<input placeholder="Fecha:" value="{{$stock->fechaEntrada}}" type="text" class="form-control" id="fecha" name="fecha"readonly="true" >
+                    	</div>
                     	<label class="control-label col-sm-2">Precio Entrada:</label>
                         <div class="col-sm-4">
                     		<input type="number" value="{{$stock->precioEntrada}}" class="form-control" name="precioEntrada" id="precioEntrada">
                      	</div>
                     </div>
+                    @if($stock->precioSalida)
+                    <div class="form-group">
+                    	<label class="control-label col-sm-2">Fecha:</label>
+                    	<div class="col-sm-4">	
+                    		<input placeholder="Fecha:" value="{{$stock->fechaSalida}}" type="text" class="form-control" id="fechaSalida" name="fechaSalida"readonly="true" >
+                    	</div>
+                    	<label class="control-label col-sm-2">Precio Salida:</label>
+                        <div class="col-sm-4">
+                    		<input type="number" value="{{$stock->precioSalida}}" class="form-control" name="precioSalida" id="precioSalida">
+                     	</div>
+                    </div> 		
+                    @endif
 	            </div>
 	            <div class="panel-footer">
 	            	<input name="id" type="hidden" value="{{$stock->id}}">
@@ -107,10 +117,21 @@
                         $('#fecha').attr('value',dateText);
                     }
                 }).datepicker();
+			$("#fechaSalida").datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    todayHighlight: true,
+                    numberOfMonths: 1,   
+                    showAnim: "slideDown",
+                    onClose: function(selectedDate) {
+                    },
+                    onSelect: function(dateText, inst) {
+                        $('#fechaSalida').attr('value',dateText);
+                    }
+                }).datepicker();
 		$.getJSON('/ajax/seriales',null,function(data){
 				var filteredSerial = data.filter(function(item){
 					if(item.text == "{{$stock->serial}}") {
-						$('#serial').append('<option value="'+item.id+'" selected>'+item.text+'</option>');
+						$('#serial').append('<option value="'+item.text+'" selected>'+item.text+'</option>');
 					}else{
 						item.disabled = true;
 						return item;

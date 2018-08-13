@@ -67,7 +67,7 @@ class StockController extends Controller
     }
     public function EditStockView($id)
     {
-        $stock = Stock::select('stock.id','prods.codbarras','stock.serial as serial','provs.nombre','prods.modelo','prods.id as prodsid', 'stock.fechaEntrada', 'stock.precioEntrada')
+        $stock = Stock::select('stock.id','prods.codbarras','stock.serial as serial','provs.nombre','prods.modelo','prods.id as prodsid', 'stock.fechaEntrada', 'stock.precioEntrada','stock.precioSalida','stock.fechaSalida')
                         ->join('provs','stock.provs_id','=','provs.id')
                         ->join('prods','stock.prods_id','=','prods.id')
                         ->where('stock.id','=', $id)->first();
@@ -85,13 +85,25 @@ class StockController extends Controller
         ]);
 
         $post = $request->all();
-        Stock::find($post['id'])->update([
-            'modelo' => $post['modelo'],
-            'fechaEntrada' => $post['fecha'],
-            'precioEntrada' => $post['precioEntrada'],
-            'serial' => $post['serial'],
-            'provs_id' => $post['proveedor']
-        ]);
+        if($request->input('fechaSalida')){
+            Stock::find($post['id'])->update([
+                'modelo' => $post['modelo'],
+                'fechaEntrada' => $post['fecha'],
+                'precioEntrada' => $post['precioEntrada'],
+                'serial' => $post['serial'],
+                'provs_id' => $post['proveedor'],
+                'fechaSalida' => $post['fechaSalida'],
+                'precioSalida' => $post['precioSalida'] 
+            ]);
+        }else{
+            Stock::find($post['id'])->update([
+                'modelo' => $post['modelo'],
+                'fechaEntrada' => $post['fecha'],
+                'precioEntrada' => $post['precioEntrada'],
+                'serial' => $post['serial'],
+                'provs_id' => $post['proveedor']
+            ]);
+        }
         return Redirect::to('/admin/stock')->with('status', 'Se ha editado correctamente el registro.');
     }
     public function EliminarStock(Request $request)
@@ -105,5 +117,19 @@ class StockController extends Controller
             $queryinfo->estado = false;
         $queryinfo->save();
         return Redirect::to('/admin/stock')->with('status', 'Se ha eliminado correctamente el registro.');
+    }
+    public function SalidaStock(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|integer',
+        ]);
+
+        $queryinfo = Stock::find($request['id']);
+            $queryinfo->disponible = false;
+            $queryinfo->fechaSalida = $request->fecha_out;
+            $queryinfo->precioSalida = $request->precioSalida;
+        $queryinfo->save();
+        return Redirect::to('/admin/stock')->with('status', 'Se ha completado correctamente la operación.');
+
     }
 }
