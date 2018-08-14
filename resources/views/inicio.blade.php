@@ -21,7 +21,9 @@
                     {{ session('status') }}
                 </div>
             @endif
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <div class="chart-container" style="position: relative; height:40vh; width:35vw">
+                <canvas id="myChart" width="200" height="110"></canvas>
+            </div>
             </div>
             	<div class="panel-footer">
             </div>
@@ -55,7 +57,6 @@
 <script>
 	$(document).ready(function(){
 		$.getJSON('/ajax/chart',null, function(e){
-				//data = {};
 				$.getJSON('/ajax/linesalida',null,function(data){
 					datasets =[];
 					linea = {};
@@ -64,8 +65,12 @@
 					datasets.push(linea2);
 					datasets[0].label = "Entrada";
 					datasets[0].data = e;
-					datasets[1].label = "Salida";
-					datasets[1].data = data;
+                    console.log(data);
+                    if(data[0].t != null){
+                        datasets[1].label = "Salida";
+                        datasets[1].data = data;
+                    }
+                    //console.log(datasets);
 					var ctx = document.getElementById("myChart").getContext('2d');
 					var myChart = new Chart(ctx, {
 					    type: 'line',
@@ -79,11 +84,11 @@
                                 display: true,
                                 position: 'right',
                             },
-                            title: {
+                            /*title: {
                                     display: true,
                                     text: 'Intervenciones (Ultimos 7 días)',
                                     fontFamily: 'Arial'
-                                },
+                                },*/
                             scales: {
                                 yAxes: [{
                                     gridLines: {
