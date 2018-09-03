@@ -110,4 +110,22 @@ class AjaxController extends Controller
 					->get();
 		return Response::json($ajax);
 	}
+	public function getTiposProds(Request $request)
+	{
+		if($request->search){
+			
+		$ajax = Productos::select('prods.tipo as text')
+				->where('prods.tipo','ilike', '%'.$request->search.'%')
+				->groupBy('prods.tipo')
+				->get();
+		}
+		else
+		{
+			$ajax = Productos::select('prods.tipo as text')
+				->groupBy('prods.tipo')
+				->get();
+		}
+
+		return Response::json($ajax);
+	}
 }

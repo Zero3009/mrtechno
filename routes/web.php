@@ -28,6 +28,7 @@ Route::get('/ajax/proveedores', ['uses' => 'AjaxController@getProveedores']);
 Route::get('/ajax/seriales', ['uses' => 'AjaxController@getSeriales']);
 Route::get('/ajax/chart', ['uses' => 'AjaxController@LineEntrada']);
 Route::get('/ajax/linesalida',['uses' => 'AjaxController@LineSalida']);
+Route::get('/ajax/tiposprods',['uses' => 'AjaxController@getTiposProds']);
 //FIN AJAX
 
 

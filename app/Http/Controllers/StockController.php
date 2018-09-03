@@ -129,7 +129,9 @@ class StockController extends Controller
         $queryinfo = Stock::find($request['id']);
             $queryinfo->disponible = false;
             $queryinfo->fechaSalida = $request->fecha_out;
-            $queryinfo->precioSalida = $request->precioSalida;
+            if($request->precioSalida){
+                $queryinfo->precioSalida = $request->precioSalida;
+            }
         $queryinfo->save();
         return Redirect::to('/admin/stock')->with('status', 'Se ha completado correctamente la operación.');
 

@@ -16,13 +16,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Tipo:</label>
                         <div class="col-sm-4">
-                            <input class="form-control" style="width: 100%" name="tipo" type="text" required>
+                        	<select name="tipo" class="form-control" style="width: 100%" id="tipo" required></select>
                         </div>
                         <label class="control-label col-sm-2">Marca:</label>
 	                    <div class="col-sm-4"> 
 	                        <!--<select class="form-control" name="tipo" required="true" id="tipo">
 							</select>-->
-							<input class="form-control" type="text" name="marca">
+							<select name="marca" class="form-control" style="width: 100%" id="marca" required></select>
 						</div>
                     </div>
                     <div class="form-group">
@@ -50,6 +50,52 @@
 @section('js')
 @push('scripts')
 <script>
+	$(document).ready(function(){
+		$('#tipo').select2({
+			placeholder: 'Tipo de producto',
+			tags: true,
+			ajax: {
+					url: '/ajax/tiposprods',
+					data: function(params){
+						var query ={
+							search: params.term,
+						}
+						return query;
+					},
+					dataType: 'json',
+					processResults: function(data){
+						data.forEach(function(e){
+							e.id = e.text;
+						});
+						return {
+							results: data
+						}
+					}
+			}
+		});
+		$('#marca').select2({
+			placeholder: 'Marca',
+			tags: true,
+			ajax: {
+				url: '/ajax/marcas',
+				data: function(params){
+					var query ={
+						search: params.term,
+					}
+					return query;
+				},
+				dataType: 'json',
+				processResults: function(data){
+					data.forEach(function(e){
+						e.id = e.text;
+					});
+					return {
+						results: data
+					}
+				}
+			}
+		});
+	});
 	/*$.getJSON("/ajax/productos", function (json) {
 		console.log(json);
 	    $.each(json, function(i, item) {

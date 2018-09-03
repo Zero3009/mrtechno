@@ -21,8 +21,8 @@
                     {{ session('status') }}
                 </div>
             @endif
-            <div class="chart-container" style="position: relative; height:40vh; width:35vw">
-                <canvas id="myChart" width="200" height="110"></canvas>
+            <div class="chart-container" style="position: relative; height:60vh; width:80vw">
+                <canvas id="myChart" width="80" height="30"></canvas>
             </div>
             </div>
             	<div class="panel-footer">

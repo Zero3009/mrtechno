@@ -344,6 +344,7 @@ function addRow(){
 
         });
     });
+
     $('[data-hid="hidadded"]').on("select2:select", function(e){
         var test = $('#serial_'+e.delegateTarget.attributes[1].nodeValue).val() + '';
         var test2 = test.split(",");
