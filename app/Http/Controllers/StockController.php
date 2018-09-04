@@ -95,6 +95,16 @@ class StockController extends Controller
                 'fechaSalida' => $post['fechaSalida'],
                 'precioSalida' => $post['precioSalida'] 
             ]);
+        }else if($request->input('fechaSalida')){
+            Stock::find($post['id'])->update([
+                'modelo' => $post['modelo'],
+                'fechaEntrada' => $post['fecha'],
+                'precioEntrada' => $post['precioEntrada'],
+                'serial' => $post['serial'],
+                'provs_id' => $post['proveedor'],
+                'fechaSalida' => $post['fechaSalida'],
+                'precioSalida' => null
+            ]);
         }else{
             Stock::find($post['id'])->update([
                 'modelo' => $post['modelo'],

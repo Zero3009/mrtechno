@@ -47,7 +47,7 @@
                     		<input type="number" value="{{$stock->precioEntrada}}" class="form-control" name="precioEntrada" id="precioEntrada">
                      	</div>
                     </div>
-                    @if($stock->precioSalida)
+                    @if($stock->fechaSalida)
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Fecha:</label>
                     	<div class="col-sm-4">	

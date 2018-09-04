@@ -8,7 +8,7 @@
 	            <div class="panel-heading" style="background: #222d32   ; color: #FFFFFF;  opacity: 0.9;">
 	                <div class="row">
 	                    <div class="col-md-4" style="float: left;">
-	                        <h3 class="panel-title" style="margin-top: 10px;">Nueva etiqueta</h3>
+	                        <h3 class="panel-title" style="margin-top: 10px;">Nuevo producto</h3>
 	                    </div>
 	            	</div>
 	            </div>
@@ -40,7 +40,7 @@
 	            </div>
 	            <div class="panel-footer">
 	                <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
-	                <input class="btn btn btn-success" tabindex="1" type="submit" value="Crear etiqueta">
+	                <input class="btn btn btn-success" tabindex="1" type="submit" value="Crear producto">
 	            </div>  
 	        </div>
 	    </div>

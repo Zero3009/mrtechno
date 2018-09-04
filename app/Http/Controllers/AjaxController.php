@@ -106,6 +106,7 @@ class AjaxController extends Controller
 				Stock::groupBy('fechaSalida')
 					->selectRaw('sum("stock"."precioSalida") AS y, "stock"."fechaSalida" as t')
 					->where('estado','=',true)
+					//->whereNotNull('precioSalida')
 					->orderBy('fechaSalida')
 					->get();
 		return Response::json($ajax);
