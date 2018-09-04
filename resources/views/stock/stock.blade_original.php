@@ -24,32 +24,30 @@
                     @endforeach
                     </div>
                 @endif 
-                <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal" id="app">
-                    <!--<template id="app">-->
-                        <table class="table table-striped table-bordered" name="tabla" id="tabla">
-                            <tr>
-                                <th scope="col" style="width:18%">Codigo de barras</th>
-                                <th scope="col" style="width:15%">Modelo</th>
-                                <th scope="col" style="width:20%">Serial</th>
-                                <th scope="col" style="width:10%">Proveedor</th>
-                                <th scope="col" style="width:12%">Precio Entrada</th>
-                                <th scope="col" style="width:15%">Fecha Entrada</th>
-                                <th scope="col" style="width:10%">Accion</th>
-                            </tr>
-                            <tr v-bind:id="'row_' + n.id" v-for="n in rows">
-                                <td style="width:18%"><v-select v-model="selected" :options="options" @search="onSearch"></v-select><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
-                                <td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_1"></select></td>
-                                <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
-                                <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
-                                <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
-                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" :language="es" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker></td>
-                                <td style="width:10%"><input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+"><button type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" class="btn btn-danger">X</button></td>
-                            </tr>
-                        </table>
+                <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal">
+                    <table class="table table-striped table-bordered" name="tabla" id="tabla">
+                        <tr>
+                            <th scope="col" style="width:18%">Codigo de barras</th>
+                            <th scope="col" style="width:15%">Modelo</th>
+                            <th scope="col" style="width:20%">Serial</th>
+                            <th scope="col" style="width:10%">Proveedor</th>
+                            <th scope="col" style="width:12%">Precio Entrada</th>
+                            <th scope="col" style="width:15%">Fecha Entrada</th>
+                            <th scope="col" style="width:10%">Accion</th>
+                        </tr>
+                        <tr id="row1">
+                            <td style="width:18%"><select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select></td>
+                            <td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_1"></select></td>
+                            <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
+                            <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
+                            <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
+                            <td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true"></td>
+                            <td style="width:10%"><input data-bot="add" class="btn btn-success" onclick="addRow()" tabindex="1" type="button" name="add"  id="add_1" value="+"></td>
+                        </tr>
+                    </table>
 
-                        <input class="btn btn btn-success" tabindex="1" type="submit" value="Cargar">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <!--</template>-->
+                    <input class="btn btn btn-success" tabindex="1" type="submit" value="Cargar">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 </form>
                 <table class="table table-striped table-bordered tabla-filtro" width="100%" id="table">
                     <thead>
@@ -66,6 +64,20 @@
                             <th>Acción</th>
                         </tr>
                     </thead>
+                    <!--<tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>-->
                 </table>
             </div>
             <div class="panel-footer">
@@ -136,67 +148,7 @@
 @section('js')
 @push('scripts')
 <script>
-    var state = {
-        date: new Date()
-    }
-    Vue.component('v-select', VueSelect.VueSelect);
-    var vm = new Vue({
-        el: "#app",
-        data: {
-            selected: null,
-            options: [],
-            rows: [
-                {
-                    id: 1
-                }
-            ]
-        },
-        components: {
-            vuejsDatepicker,
-        },
-        data: { 
-            es: {   
-                    language: 'Spanish', 
-                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    monthsAbbr: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
-                    days: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab']
-                }, 
-        }, 
-        methods: {
-            onSearch(search, loading) 
-            {
-                loading(true);
-                axios.get('/ajax/productos')
-                    .then(response => {
-                        this.options = response.data;
-                        loading(false);
-                });
-            },
-
-            aument() 
-            {
-                return this.rows.push({id: this.rows[this.rows.length - 1].id + 1});
-            },
-            decrease(event) 
-            {
-                index = this.rows.findIndex(x => x.id==event.currentTarget.id);
-                return Vue.delete(this.rows, index);
-            },
-            /*customFormatter(date) {
-                return moment(date).format('dd MM yyyy');
-            }*/
-        }    
-    });
-    /*search: _.debounce((loading, search, vm) => {
-                fetch(
-                    `https://api.github.com/search/repositories?q=${escape(search)}`
-                ).then(res => {
-                    res.json().then(json => (vm.options = json.items));
-                    loading(false);
-                });
-            }, 350)
-        }*/
-/*var ajaxProveedor = {
+var ajaxProveedor = {
     url:'/ajax/proveedores',
     data: function (params) {
         var query ={
@@ -242,8 +194,12 @@ var modelosAjax = {
                     results: data
                   };
                 }
-};*/
+};
 $(document).ready(function(){
+    /*$('#table tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );*/
     var table = $('#table').DataTable({
         "processing": true,
         "serverSide": true,
@@ -266,7 +222,18 @@ $(document).ready(function(){
         },
         "bFilter": true,
     });
-    /*$("#fecha_1").datepicker({
+    /*table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );*/
+    $("#fecha_1").datepicker({
                     dateFormat: 'yy-mm-dd',
                     todayHighlight: true,
                     numberOfMonths: 1,   
@@ -308,8 +275,7 @@ $(document).ready(function(){
                 // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
         },
           
-    });*/
-    /*
+    });
     $('#proveedor_1').select2({
         placeholder: 'Proveedores',
         ajax:{
@@ -332,9 +298,9 @@ $(document).ready(function(){
     $('#modelo_1').select2();
     $('#serial_1').select2({
 
-    });*/
+    });
 })
-/*var i = 1;
+var i = 1;
 function addRow(){
     console.log('work');
     i++;
@@ -423,8 +389,8 @@ function addRow(){
         }
     });
 }
-*/
-/*$('[data-ex="asd"]').on("select2:select",function(e){
+
+$('[data-ex="asd"]').on("select2:select",function(e){
     $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).empty().trigger("change");
     $.getJSON('/ajax/productos',    {
             mod: e.params.data.text
@@ -528,7 +494,7 @@ jQuery(function($) {
 });
 $("#ocultar").fadeTo(8000, 500).slideUp(500, function(){
     $("ocultar").alert('close');
-});*/
+});
 </script>
 
 @endsection

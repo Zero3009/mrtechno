@@ -18,6 +18,7 @@ class StockController extends Controller
     public function NewStock(Request $request)
     {   
         //return $request->all();
+        return $request;
     	DB::beginTransaction();
     	try 
         {

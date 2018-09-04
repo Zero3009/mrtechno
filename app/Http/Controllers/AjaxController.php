@@ -12,20 +12,20 @@ use Response;
 
 class AjaxController extends Controller
 {
-	public function getProductos(Request $request)
-	{	
-		if($request->search){
-			$ajax = Productos::select('prods.modelo as text','prods.id as id')
+	public function getProductos()
+	{
+		/*if($request->search){
+			$ajax = Productos::select('prods.modelo as label','prods.id as value')
 							->where('prods.estado','=',true)
-							->where('prods.codbarras', '=', $request->mod)
-							//->where('prods.modelo', 'ilike', '%'.$request->search.'%')
-							->get();
-		}else{
-			$ajax = Productos::select('prods.modelo as text','prods.id as id')
+							//->where('prods.codbarras', '=', $request->mod)
+							->where('prods.modelo', 'ilike', '%'.$request->search.'%')
+							->get();*/
+		//}else{
+			$ajax = Productos::select('prods.modelo as label','prods.id as value')
 							->where('prods.estado','=',true)
-							->where('prods.codbarras', '=' , $request->mod)
+							//->where('prods.codbarras', '=' , $request->mod)
 							->get();
-		}
+		//}
 	    return Response::json($ajax);
 	}
 	public function getMarcas(Request $request)
