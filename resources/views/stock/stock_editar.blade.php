@@ -21,19 +21,17 @@
                         <label class="control-label col-sm-2">Código de barras:</label>
                         <div class="col-sm-4">
                             <v-select :options="codigos" v-model="selected" placeholder="Código de barras"></v-select>
-                            <input type="hidden" name="codbarras" v-model="selected">
+                            <input type="hidden" name="codbarras" v-model="selected.value">
                             <!--<select id="codbarras" class="form-control" style="width: 100%" name="codbarras" type="text" required>
                             	
                             </select>-->
                         </div>
                         <label class="control-label col-sm-2">Modelo:</label>
                         <div class="col-sm-4">
-                            <select id="modelo" class="form-control" style="width: 100%" name="modelo" type="text" value="">
-                            	<option value="{{$stock->prodsid}}" selected>{{$stock->modelo}}</option>
-                            </select>
+                            <input type="text" class="form-control" v-model="selected.modelo" readonly>
                         </div>
                     </div>
-                    <!--<div class="form-group">
+                    <div class="form-group">
                     	<label class="control-label col-sm-2">Serial:</label>
                     	<div class="col-sm-4">
                     		<select id="serial" class="form-control" style="width: 100%" name="serial" type="text" required></select>
@@ -42,11 +40,12 @@
                     	<div class="col-sm-4">
                     		<select id="proveedor" class="form-control" style="width: 100%" name="proveedor" type="text" required></select>
                     	</div>
-                    </div>-->
+                    </div>
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Fecha Entrada:</label>
-                    	<div class="col-sm-4">	
-                    		<input placeholder="Fecha:" value="{{$stock->fechaEntrada}}" type="text" class="form-control" id="fecha" name="fecha"readonly="true" >
+                    	<div class="col-sm-4">
+                            <vuejs-datepicker value="{{$stock->fechaEntrada}}" :language="es" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker>	
+                    		<!--<input placeholder="Fecha:" value="{{$stock->fechaEntrada}}" type="text" class="form-control" id="fecha" name="fecha"readonly="true" >-->
                     	</div>
                     	<label class="control-label col-sm-2">Precio Entrada:</label>
                         <div class="col-sm-4">
@@ -80,6 +79,9 @@
 @section('js')
 @push('scripts')
 <script>
+    var state = {
+        date: new Date()
+    }
 
     Vue.component('v-select', VueSelect.VueSelect);
     var vm = new Vue({
@@ -88,25 +90,35 @@
             codigos: [],
             blade: null,
             selected: null,
-            url2: '/ajax/codbarras'
+            url2: '/ajax/codbarras',
+            es: {Language: 'Spanish',
+                   months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                   monthsAbbr: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                   days: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'],
+                   rtl: false,
+                   ymd: false,
+                   yearSuffix: ''
+            }
+        },
+        components: {
+            vuejsDatepicker,
         },
         methods:{
             codbarras()
             {
                 axios.get(this.url2)
                     .then(response => {
-                        
-                        response.data.forEach(function(item){
-                            console.log(item.label);   
-                            if(this.blade.codbarras == item.label)
+                        for(a = 0;a <response.data.length;a++)
+                        {
+                            if(this.blade.codbarras == response.data[a].label)
                             {
-                                this.selected = item;
+                                this.selected = response.data[a];
                             }
-                        });
+                        }
                         this.codigos = response.data;
-
                 });
             }
+
         },
         beforeMount()
         {
