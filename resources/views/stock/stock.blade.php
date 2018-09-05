@@ -28,8 +28,6 @@
                 <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal" id="app">
                     @verbatim
                     <!--<template id="app">-->
-                        {{rows}}
-                        {{seriales}}
                         <table class="table table-striped table-bordered" name="tabla" id="tabla">
                             <tr>
                                 <th scope="col" style="width:18%">Codigo de barras</th>
