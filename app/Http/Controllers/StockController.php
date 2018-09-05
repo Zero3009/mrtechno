@@ -18,17 +18,14 @@ class StockController extends Controller
     public function NewStock(Request $request)
     {   
         //return $request->all();
-        return $request;
     	DB::beginTransaction();
     	try 
         {
             $validator = Validator::make($request->all(), [
                 'codbarras' => 'required',
-                'modelo' => 'required',
                 'proveedor' => 'required',
                 'precioEntrada' => 'required',
                 'fecha' => 'required',
-                'cantidadseriales' => 'required'
             ]);
             if ($validator->fails()) {
                 //return 'hola';
@@ -39,18 +36,16 @@ class StockController extends Controller
             }   
 
 
-            $g = 0;
-                for ($i=0; $i < sizeof($request->cantidadseriales); $i++) {
-                    for($h = 0;$h < $request->cantidadseriales[$i];$h++){                        
-                        
+                for ($i=0; $i < sizeof($request->codbarras); $i++) {
+                    $arraySeriales = explode(",", $request->seriales[$i]);
+                    for($h = 0;$h < sizeof($arraySeriales);$h++){                        
                         $query = new Stock;
-                            $query->prods_id = $request->modelo[$i];
+                            $query->prods_id = $request->codbarras[$i];
                             $query->provs_id = $request->proveedor[$i];
-                            $query->serial = $request->serial[$g];
+                            $query->serial = $arraySeriales[$h];
                             $query->precioEntrada = $request->precioEntrada[$i];
                             $query->fechaEntrada =$request->fecha[$i];
                         $query->save();
-                        $g = $g + 1;
                     }
                 }
             
@@ -76,6 +71,7 @@ class StockController extends Controller
     }
     public function EditStock(Request $request)
     {
+        return $request;
         $this->validate($request, [
             'codbarras' => 'required',
             'modelo' => 'required',

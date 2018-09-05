@@ -54,38 +54,38 @@ class AjaxController extends Controller
 								->where('prods.estado','=', true)
 								->get();
 		}else{*/
-			$ajax = Productos::select('prods.codbarras as label','prods.id as value')
+			$ajax = Productos::select('prods.codbarras as label','prods.id as value', 'prods.modelo')
 								->where('prods.estado','=', true)
 								->get();
 		//}
 		return Response::json($ajax);
 	}
-	public function getProveedores(Request $request){
-		if($request->search){
+	public function getProveedores(){
+		/*if($request->search){
 			$ajax = Proveedores::select('provs.nombre as text','provs.id as id')
 								->where('provs.nombre', 'ilike', '%'.$request->search.'%')
 								->where('provs.estado','=', true)
 								->get();
-		}else{
-			$ajax = Proveedores::select('provs.nombre as text','provs.id as id')
+		}else{*/
+			$ajax = Proveedores::select('provs.nombre as label','provs.id as value')
 								->where('provs.estado','=', true)
 								->get();
-		}
+		//}
 		return Response::json($ajax);	
 	}
 	public function getSeriales(Request $request)
 	{
-		if($request->search)
+		/*if($request->search)
 		{
 			$ajax = Stock::select('stock.serial as text','stock.id as id')
 							->where('stock.estado','=', true)
 							->where('stock.serial','ilike', '%'.$request->search.'%')
 							->get();
-		}else{
-			$ajax = Stock::select('stock.serial as text','stock.id as id')
+		}else{*/
+			$ajax = Stock::select('stock.serial as label')
 							->where('stock.estado','=',true)
 							->get();
-		}
+		//}
 		return Response::json($ajax);
 	}
 	public function LineEntrada()

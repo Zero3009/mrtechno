@@ -28,6 +28,8 @@
                 <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal" id="app">
                     @verbatim
                     <!--<template id="app">-->
+                        {{rows}}
+                        {{seriales}}
                         <table class="table table-striped table-bordered" name="tabla" id="tabla">
                             <tr>
                                 <th scope="col" style="width:18%">Codigo de barras</th>
@@ -40,12 +42,32 @@
                             </tr>
                             <tr v-bind:id="'row_' + n.id" v-for="n in rows">
                                 
-                                <td style="width:18%"><v-select :options="options" v-model="selected" placeholder="Código de barras"></v-select><template v-if="selected != []"><input type="hidden" name="id" class="id" v-model="selected.value"></template><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
-                                <td style="width:15%"><v-select :options="options2" @search="onSearch1" v-model="selected2" disabled></v-select><!--<select name="modelo[]" class="form-control" id="modelo_1"></select>--></td>
-                                <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
-                                <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
+                                <td style="width:18%">
+                                    <v-select :options="options" v-model="n.codbarras" placeholder="Código de barras"></v-select>
+                                    <template v-if="n.codbarras != null">
+                                        <input type="hidden" name="codbarras[]" v-model="n.codbarras.value">
+                                    </template><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
+                                <td style="width:15%">
+                                    <template v-if="n.codbarras != null">
+                                        <label class="form-control">{{n.codbarras.modelo}}</label>
+                                    </template>
+                                    <!--<v-select :options="options2" @search="onSearch1" v-model="selected2"></v-select><select name="modelo[]" class="form-control" id="modelo_1"></select>-->
+                                </td>
+                                <td style="width:20%">
+                                    <v-select v-model="n.seriales" :options="seriales" multiple="true" taggable="true" placeholder="Seriales"></v-select>
+                                    <template v-if="n.seriales != null"><input type="hidden" name="seriales[]" v-model="n.seriales">
+                                    </template>
+                                    <!--<select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple">    
+                                    </select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>-->
+                                <td style="width:10%"><!--<select name="proveedor[]" class="form-control" id="proveedor_1"></select>-->
+
+                                    <v-select :options="proveedores" v-model="n.proveedor" placeholder="Proveedor"></v-select>
+                                    <template v-if="n.proveedor != null">
+                                        <input type="hidden" name="proveedor[]" v-model="n.proveedor.value">
+                                    </template>
+                                </td>
                                 <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
-                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker></td>
+                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" format="yyyy-MM-dd" name="fecha[]"></vuejs-datepicker></td>
                                 <td style="width:10%"><input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+"><button  type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" v-show="n.id > 1" class="btn btn-danger">X</button></td>
                             </tr>
                         </table>
@@ -146,59 +168,75 @@
     var vm = new Vue({
         el: "#app",
         data: {
-            selected: [],
+            selected: null,
+            tag: null,
             selected2: null,
             options: [],
-            options2: [],
+            proveedores: [],
+            seriales: [],
             rows: [
                 {
-                    id: 1
+                    id: 1,
+                    codbarras: null,
+                    proveedor: null,
+                    seriales: null
                 }
             ],
             url: '/ajax/productos',
-            url2: '/ajax/codbarras'
+            url2: '/ajax/codbarras',
+            url3: '/ajax/proveedores',
+            url4: '/ajax/seriales'
         },
         components: {
             vuejsDatepicker,
         },
         methods: {
-            productos()
+            cargarSelects()
             {
-                axios.get(this.url)
+                this.codbarras();
+                this.provees();
+                this.serials();
+            },
+            codbarras()
+            {
+                axios.get(this.url2)
                     .then(response => {
                         this.options = response.data;
                 });
             },
-            onSearch1(search, loading)
+            serials()
             {
-                loading(true);
-                axios.get(this.url2)
+                axios.get(this.url4)
                     .then(response => {
-                        console.log(response);
-                        this.options2 = response.data;
-                        console.log(this.options2);
-                        loading(false);
+                        var a = [];
+                        response.data.forEach(function(item){
+                            a.push(item.label);console.log(a);
+                        });
+                        this.seriales = a;      
+                        
+                })
+            },
+            provees()
+            {
+                axios.get(this.url3)
+                    .then(response => {
+                        this.proveedores = response.data;   
                 });
             },
             aument() 
             {
-                return this.rows.push({id: this.rows[this.rows.length - 1].id + 1});
+                return this.rows.push({id: this.rows[this.rows.length - 1].id + 1, codbarras: null, proveedor: null, seriales: null});
             },
             decrease(event) 
             {
                 index = this.rows.findIndex(x => x.id==event.currentTarget.id);
                 return Vue.delete(this.rows, index);
-            },
+            }
         },
         beforeMount()
         {
-            this.productos();
-        },
-        watch: {
-            selected: function (newVal) {
-                console.log(this.selected);
-            }
-        },  
+            this.cargarSelects();
+        }
     });
     /*search: _.debounce((loading, search, vm) => {
                 fetch(
@@ -492,7 +530,7 @@ $('[data-hid="hidorigin"]').on("select2:unselect",function(e){
 $(document).on('click', '.btn_remove', function(){
     var button_id = $(this).attr("id");
     $('#row'+button_id).remove();
-}); 
+});*/ 
 
 $('#table').on('draw.dt', function () {
     $(".delete").click(function(){
@@ -514,7 +552,7 @@ $('#table').on('draw.dt', function(){
     });
 
 });
-
+/*
 jQuery(function($) {
     $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -538,10 +576,10 @@ jQuery(function($) {
         yearSuffix: ''
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
-});
+});*/
 $("#ocultar").fadeTo(8000, 500).slideUp(500, function(){
     $("ocultar").alert('close');
-});*/
+});
 </script>
 
 @endsection

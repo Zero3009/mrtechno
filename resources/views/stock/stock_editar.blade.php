@@ -12,13 +12,19 @@
 	                    </div>
 	            	</div>
 	            </div>
-	            <div class="panel-body">
+	            <div class="panel-body" id="app">
                     <div class="form-group">
+
+                        @verbatim
+                        {{selected}}
+                        @endverbatim
                         <label class="control-label col-sm-2">Código de barras:</label>
                         <div class="col-sm-4">
-                            <select id="codbarras" class="form-control" style="width: 100%" name="codbarras" type="text" required>
-                            	<!--<option id=1>{{$stock->codbarras}}</option>-->
-                            </select>
+                            <v-select :options="codigos" v-model="selected" placeholder="Código de barras"></v-select>
+                            <input type="hidden" name="codbarras" v-model="selected">
+                            <!--<select id="codbarras" class="form-control" style="width: 100%" name="codbarras" type="text" required>
+                            	
+                            </select>-->
                         </div>
                         <label class="control-label col-sm-2">Modelo:</label>
                         <div class="col-sm-4">
@@ -27,7 +33,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                     	<label class="control-label col-sm-2">Serial:</label>
                     	<div class="col-sm-4">
                     		<select id="serial" class="form-control" style="width: 100%" name="serial" type="text" required></select>
@@ -36,7 +42,7 @@
                     	<div class="col-sm-4">
                     		<select id="proveedor" class="form-control" style="width: 100%" name="proveedor" type="text" required></select>
                     	</div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Fecha Entrada:</label>
                     	<div class="col-sm-4">	
@@ -47,6 +53,7 @@
                     		<input type="number" value="{{$stock->precioEntrada}}" class="form-control" name="precioEntrada" id="precioEntrada">
                      	</div>
                     </div>
+
                     @if($stock->fechaSalida)
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Fecha:</label>
@@ -73,7 +80,41 @@
 @section('js')
 @push('scripts')
 <script>
-	$(document).ready(function(){
+
+    Vue.component('v-select', VueSelect.VueSelect);
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            codigos: [],
+            blade: null,
+            selected: null,
+            url2: '/ajax/codbarras'
+        },
+        methods:{
+            codbarras()
+            {
+                axios.get(this.url2)
+                    .then(response => {
+                        
+                        response.data.forEach(function(item){
+                            console.log(item.label);   
+                            if(this.blade.codbarras == item.label)
+                            {
+                                this.selected = item;
+                            }
+                        });
+                        this.codigos = response.data;
+
+                });
+            }
+        },
+        beforeMount()
+        {
+            this.blade = {!! json_encode($stock->toArray()) !!};
+            this.codbarras();
+        }
+    });
+	/*$(document).ready(function(){
 			$('#proveedor').select2();
 			$('#modelo').select2();
 			
@@ -181,7 +222,7 @@ jQuery(function($) {
         yearSuffix: ''
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
-});
+});*/
 
 </script>
 @endsection
