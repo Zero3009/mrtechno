@@ -46,18 +46,18 @@ class AjaxController extends Controller
 		
 		return Response::json($ajax);
 	}
-	public function getCodbarras(Request $request){
+	public function getCodbarras(){
 		//return $request->search;
-		if($request->search){
+		/*if($request->search){
 			$ajax = Productos::select('prods.codbarras as text','prods.id as id')
 								->where('prods.codbarras', 'ilike', '%'.$request->search.'%')
 								->where('prods.estado','=', true)
 								->get();
-		}else{
-			$ajax = Productos::select('prods.codbarras as text','prods.id as id')
+		}else{*/
+			$ajax = Productos::select('prods.codbarras as label','prods.id as value')
 								->where('prods.estado','=', true)
 								->get();
-		}
+		//}
 		return Response::json($ajax);
 	}
 	public function getProveedores(Request $request){

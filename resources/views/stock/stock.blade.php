@@ -24,7 +24,9 @@
                     @endforeach
                     </div>
                 @endif 
+
                 <form method="POST" action="/admin/stock/nuevo/post" accept-charset="UTF-8" class="form-horizontal" id="app">
+                    @verbatim
                     <!--<template id="app">-->
                         <table class="table table-striped table-bordered" name="tabla" id="tabla">
                             <tr>
@@ -37,16 +39,17 @@
                                 <th scope="col" style="width:10%">Accion</th>
                             </tr>
                             <tr v-bind:id="'row_' + n.id" v-for="n in rows">
-                                <td style="width:18%"><v-select v-model="selected" :options="options" @search="onSearch"></v-select><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
-                                <td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_1"></select></td>
+                                
+                                <td style="width:18%"><v-select :options="options" v-model="selected" placeholder="Código de barras"></v-select><template v-if="selected != []"><input type="hidden" name="id" class="id" v-model="selected.value"></template><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
+                                <td style="width:15%"><v-select :options="options2" @search="onSearch1" v-model="selected2" disabled></v-select><!--<select name="modelo[]" class="form-control" id="modelo_1"></select>--></td>
                                 <td style="width:20%"><select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>
                                 <td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_1"></select></td>
                                 <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
-                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" :language="es" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker></td>
-                                <td style="width:10%"><input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+"><button type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" class="btn btn-danger">X</button></td>
+                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker></td>
+                                <td style="width:10%"><input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+"><button  type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" v-show="n.id > 1" class="btn btn-danger">X</button></td>
                             </tr>
                         </table>
-
+                        @endverbatim
                         <input class="btn btn btn-success" tabindex="1" type="submit" value="Cargar">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <!--</template>-->
@@ -143,36 +146,40 @@
     var vm = new Vue({
         el: "#app",
         data: {
-            selected: null,
+            selected: [],
+            selected2: null,
             options: [],
+            options2: [],
             rows: [
                 {
                     id: 1
                 }
-            ]
+            ],
+            url: '/ajax/productos',
+            url2: '/ajax/codbarras'
         },
         components: {
             vuejsDatepicker,
         },
-        data: { 
-            es: {   
-                    language: 'Spanish', 
-                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    monthsAbbr: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
-                    days: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab']
-                }, 
-        }, 
         methods: {
-            onSearch(search, loading) 
+            productos()
             {
-                loading(true);
-                axios.get('/ajax/productos')
+                axios.get(this.url)
                     .then(response => {
                         this.options = response.data;
+                });
+            },
+            onSearch1(search, loading)
+            {
+                loading(true);
+                axios.get(this.url2)
+                    .then(response => {
+                        console.log(response);
+                        this.options2 = response.data;
+                        console.log(this.options2);
                         loading(false);
                 });
             },
-
             aument() 
             {
                 return this.rows.push({id: this.rows[this.rows.length - 1].id + 1});
@@ -182,10 +189,16 @@
                 index = this.rows.findIndex(x => x.id==event.currentTarget.id);
                 return Vue.delete(this.rows, index);
             },
-            /*customFormatter(date) {
-                return moment(date).format('dd MM yyyy');
-            }*/
-        }    
+        },
+        beforeMount()
+        {
+            this.productos();
+        },
+        watch: {
+            selected: function (newVal) {
+                console.log(this.selected);
+            }
+        },  
     });
     /*search: _.debounce((loading, search, vm) => {
                 fetch(
