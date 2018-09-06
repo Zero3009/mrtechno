@@ -71,10 +71,8 @@ class StockController extends Controller
     }
     public function EditStock(Request $request)
     {
-        return $request;
         $this->validate($request, [
             'codbarras' => 'required',
-            'modelo' => 'required',
             'fecha' => 'required',
             'precioEntrada' => 'required',
             'proveedor' => 'required',
@@ -84,7 +82,6 @@ class StockController extends Controller
         $post = $request->all();
         if($request->input('fechaSalida') && $request->input('precioSalida')){
             Stock::find($post['id'])->update([
-                'modelo' => $post['modelo'],
                 'fechaEntrada' => $post['fecha'],
                 'precioEntrada' => $post['precioEntrada'],
                 'serial' => $post['serial'],
@@ -94,7 +91,6 @@ class StockController extends Controller
             ]);
         }else if($request->input('fechaSalida')){
             Stock::find($post['id'])->update([
-                'modelo' => $post['modelo'],
                 'fechaEntrada' => $post['fecha'],
                 'precioEntrada' => $post['precioEntrada'],
                 'serial' => $post['serial'],
@@ -104,7 +100,6 @@ class StockController extends Controller
             ]);
         }else{
             Stock::find($post['id'])->update([
-                'modelo' => $post['modelo'],
                 'fechaEntrada' => $post['fecha'],
                 'precioEntrada' => $post['precioEntrada'],
                 'serial' => $post['serial'],

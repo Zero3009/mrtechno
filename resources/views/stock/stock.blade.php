@@ -44,29 +44,33 @@
                                     <v-select :options="options" v-model="n.codbarras" placeholder="Código de barras"></v-select>
                                     <template v-if="n.codbarras != null">
                                         <input type="hidden" name="codbarras[]" v-model="n.codbarras.value">
-                                    </template><!--<select data-ex="asd" data-row="1" class="form-control" name="codbarras[]" id="codbarras_1"></select>--></td>
+                                    </template></td>
                                 <td style="width:15%">
                                     <template v-if="n.codbarras != null">
                                         <label class="form-control">{{n.codbarras.modelo}}</label>
                                     </template>
-                                    <!--<v-select :options="options2" @search="onSearch1" v-model="selected2"></v-select><select name="modelo[]" class="form-control" id="modelo_1"></select>-->
                                 </td>
                                 <td style="width:20%">
                                     <v-select v-model="n.seriales" :options="seriales" multiple="true" taggable="true" placeholder="Seriales"></v-select>
                                     <template v-if="n.seriales != null"><input type="hidden" name="seriales[]" v-model="n.seriales">
                                     </template>
-                                    <!--<select  data-hid="hidorigin" name="serial[]" class="form-control" id="serial_1" multiple="multiple">    
-                                    </select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_1"></td>-->
-                                <td style="width:10%"><!--<select name="proveedor[]" class="form-control" id="proveedor_1"></select>-->
+                                <td style="width:10%">
 
                                     <v-select :options="proveedores" v-model="n.proveedor" placeholder="Proveedor"></v-select>
                                     <template v-if="n.proveedor != null">
                                         <input type="hidden" name="proveedor[]" v-model="n.proveedor.value">
                                     </template>
                                 </td>
-                                <td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1"></td>
-                                <td style="width:15%"><!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_1" name="fecha[]"readonly="true">--><vuejs-datepicker :value="state.date" format="yyyy-MM-dd" name="fecha[]"></vuejs-datepicker></td>
-                                <td style="width:10%"><input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+"><button  type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" v-show="n.id > 1" class="btn btn-danger">X</button></td>
+                                <td style="width:12%">
+                                    <input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_1">
+                                </td>
+                                <td style="width:15%">
+                                    <vuejs-datepicker input-class="form-control" :value="state.date" format="yyyy-MM-dd" name="fecha[]" placeholder="Fecha" :language="es" full-month-name></vuejs-datepicker>
+                                </td>
+                                <td style="width:10%">
+                                    <input data-bot="add" class="btn btn-success" v-on:click="aument()" tabindex="1" type="button" name="add"  id="add_1" value="+">
+                                    <button  type="button" name="remove" v-on:click="decrease($event)" v-bind:id="n.id" v-show="n.id > 1" class="btn btn-danger">X</button>
+                                </td>
                             </tr>
                         </table>
                         @endverbatim
@@ -92,6 +96,7 @@
                 </table>
             </div>
             <div class="panel-footer">
+
             </div>
         </div>
     </div>
@@ -152,9 +157,6 @@
         </div>
     </div>
 </div>
-<!--<style>
-    #table { font-size: 0.8em; }
-</style>-->
 @stop
 @section('js')
 @push('scripts')
@@ -180,6 +182,14 @@
                     seriales: null
                 }
             ],
+            es: {Language: 'Spanish',
+                   months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                   monthsAbbr: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                   days: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'],
+                   rtl: false,
+                   ymd: false,
+                   yearSuffix: ''
+            },
             url: '/ajax/productos',
             url2: '/ajax/codbarras',
             url3: '/ajax/proveedores',
@@ -187,6 +197,7 @@
         },
         components: {
             vuejsDatepicker,
+            Vuetable
         },
         methods: {
             cargarSelects()
@@ -206,12 +217,7 @@
             {
                 axios.get(this.url4)
                     .then(response => {
-                        var a = [];
-                        response.data.forEach(function(item){
-                            a.push(item.label);console.log(a);
-                        });
-                        this.seriales = a;      
-                        
+                        this.seriales = response.data;
                 })
             },
             provees()
@@ -236,62 +242,6 @@
             this.cargarSelects();
         }
     });
-    /*search: _.debounce((loading, search, vm) => {
-                fetch(
-                    `https://api.github.com/search/repositories?q=${escape(search)}`
-                ).then(res => {
-                    res.json().then(json => (vm.options = json.items));
-                    loading(false);
-                });
-            }, 350)
-        }*/
-/*var ajaxProveedor = {
-    url:'/ajax/proveedores',
-    data: function (params) {
-        var query ={
-            search: params.term,
-        }
-        return query;
-    },
-    dataType: 'json',
-    processResults: function(data){
-        console.log(data);
-        return {
-            results: data
-        }
-    }
-}
-var ajax =  {
-                url: '/ajax/codbarras',
-                data: function (params) {
-                  var query ={
-                    search: params.term
-                  }
-                  return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                }
-        };
-var modelosAjax = {
-    url: '/ajax/productos',
-                data: function (params) {
-                  var query ={
-                    search: params.term
-                  }
-                  return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    console.log(data);
-                  return {
-                    results: data
-                  };
-                }
-};*/
 $(document).ready(function(){
     var table = $('#table').DataTable({
         "processing": true,
@@ -315,226 +265,12 @@ $(document).ready(function(){
         },
         "bFilter": true,
     });
-    /*$("#fecha_1").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    todayHighlight: true,
-                    numberOfMonths: 1,   
-                    showAnim: "slideDown",
-                    onClose: function(selectedDate) {
-                    },
-                    onSelect: function(dateText, inst) {
-                        $('#fecha_1').attr('value',dateText);
-                    }
-                }).datepicker("setDate", "0");
-    $("#fecha_out").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    todayHighlight: true,
-                    numberOfMonths: 1,   
-                    showAnim: "slideDown",
-                    onClose: function(selectedDate) {
-                    },
-                    onSelect: function(dateText, inst) {
-                        $('#fecha_1').attr('value',dateText);
-                    }
-                }).datepicker("setDate", "0");
-    $('#codbarras_1').select2({
-        placeholder: 'Código de barras',
-        ajax: {
-                url: '/ajax/codbarras',
-                data: function (params) {
-                  var query ={
-                    search: params.term
-                  }
-                  return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-      // Tranforms the top-level key of the response object from 'items' to 'results'
-                  return {
-                    results: data
-                  };
-                }
-                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-        },
-          
-    });*/
-    /*
-    $('#proveedor_1').select2({
-        placeholder: 'Proveedores',
-        ajax:{
-            url:'/ajax/proveedores',
-            data: function (params) {
-                var query ={
-                    search: params.term,
-                }
-                return query;
-            },
-            dataType: 'json',
-            processResults: function(data){
-                console.log(data);
-                return {
-                    results: data
-                }
-            }
-        }
-    });
-    $('#modelo_1').select2();
-    $('#serial_1').select2({
-
-    });*/
 })
-/*var i = 1;
-function addRow(){
-    console.log('work');
-    i++;
-    for(j = 1;j<i;j++){
-        $('#codbarras_'+i).select2("destroy");
-        $('#proveedor_'+i).select2("destroy");
-        $('#modelo_'+i).select2("destroy");
-        $('#fecha_'+i).datepicker("destroy");
-    }
-    
-    $('#tabla').append('<tr id="row'+i+'"><td style="width:18%"><select data-ex="added" data-row="'+i+'" class="form-control" name="codbarras[]" id="codbarras_'+i+'"></select></td><td style="width:15%"><select name="modelo[]" class="form-control" id="modelo_'+i+'"></select></td><td style="width:20%"><select  data-hid="hidadded" data-row="'+i+'" name="serial[]" class="form-control" id="serial_'+i+'" multiple="multiple"></select><input type="hidden" name="cantidadseriales[]" value="0" id="cantidadseriales_'+i+'"></td><td style="width:10%"><select name="proveedor[]" class="form-control" id="proveedor_'+i+'"></select></td><td style="width:12%"><input type="number" class="form-control" name="precioEntrada[]" id="precioEntrada_'+i+'"></td><td style="width:15%"><input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" name="fecha[]" type="text" class="form-control" id="fecha_'+i+'" readonly="true"></td><td style="width:10%"><input  data-bot="add" class="btn btn-success" tabindex="1" type="button" onclick="addRow()" name="add"  id="add_'+i+'" value="+"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-    for(j=1;j<i;j++){
-        $('#serial_'+i).select2();
-        $('#modelo_'+i).select2();
-        $('#codbarras_'+i).select2({
-            placeholder: 'Código de barras',
-            ajax: ajax,
-        });
-        $('#proveedor_'+i).select2({
-            placeholder: 'Proveedores',
-            ajax: ajaxProveedor,
-        });
-        $('#fecha_'+i).datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    todayHighlight: true,
-                    numberOfMonths: 1,   
-                    showAnim: "slideDown",
-                    onClose: function(selectedDate) {
-                    },
-                    onSelect: function(dateText, inst) {
-                        $('#fecha_'+i).attr('value',dateText);
-                    }
-                }).datepicker("setDate", "0");
-    }
-    
-    $('[data-ex="added"]').on("select2:select",function(e){
-        $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).empty().trigger("change");
-        $.getJSON('/ajax/productos',    {
-            mod: e.params.data.text
-        },function(data){
-            $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).select2({
-                placeholder: 'Modelo',
-                data: data
-            });
-        });
-        $('#serial_'+e.delegateTarget.attributes[1].nodeValue).select2({
-        placeholder: 'Serial',
-        tags: true,
-        ajax:   {
-                    url:'/ajax/seriales',
-                    data: function (params) {
-                        var query ={
-                            search: params.term,
-                            mod: e.params.data.text
-                        }
-                        return query;
-                    },
-                    dataType: 'json',
-                    processResults: function(data){
-                        data.forEach(function(e) {
-                            e.disabled = true;
-                        });
-                        
-                        return {
-                            results: data
-                        }
-                    }
-
-                }
-
-        });
-    });
-
-    $('[data-hid="hidadded"]').on("select2:select", function(e){
-        var test = $('#serial_'+e.delegateTarget.attributes[1].nodeValue).val() + '';
-        var test2 = test.split(",");
-        $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(test2.length);
-    });
-    $('[data-hid="hidadded"]').on("select2:unselect",function(e){
-        var test = $('#serial_'+e.delegateTarget.attributes[1].nodeValue).val() + '';
-        if(test== ""){
-            $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(0);    
-        }else{
-            var test2 = test.split(",");
-            $('#cantidadseriales_'+e.delegateTarget.attributes[1].nodeValue).val(test2.length);
-        }
-    });
-}
-*/
-/*$('[data-ex="asd"]').on("select2:select",function(e){
-    $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).empty().trigger("change");
-    $.getJSON('/ajax/productos',    {
-            mod: e.params.data.text
-        },function(data){
-            $('#modelo_'+e.delegateTarget.attributes[1].nodeValue).select2({
-                placeholder: 'Modelo',
-                data: data
-            });
-        });
-    $('#serial_'+e.delegateTarget.attributes[1].nodeValue).select2({
-        placeholder: 'Serial',
-        tags: true,
-        ajax: {
-            url:'/ajax/seriales',
-            data: function (params) {
-                var query ={
-                    search: params.term,
-                    mod: e.params.data.text
-                }
-                return query;
-            },
-            dataType: 'json',
-            processResults: function(data){
-                data.forEach(function(e) {
-                     e.disabled = true;  
-
-                });
-                return {
-                    results: data
-                }
-            }
-
-            }
-
-    });
-});
-$('[data-hid="hidorigin"]').on("select2:select", function(e){
-    var test = $('#serial_1').val() + '';
-    var test2 = test.split(",");
-    $('#cantidadseriales_1').val(test2.length);
-});
-$('[data-hid="hidorigin"]').on("select2:unselect",function(e){
-    var test = $('#serial_1').val() + '';
-    if(test== ""){
-        $('#cantidadseriales_1').val(0);    
-    }else{
-        var test2 = test.split(",");
-        $('#cantidadseriales_1').val(test2.length);
-    }
-});
-
-$(document).on('click', '.btn_remove', function(){
-    var button_id = $(this).attr("id");
-    $('#row'+button_id).remove();
-});*/ 
 
 $('#table').on('draw.dt', function () {
     $(".delete").click(function(){
         $('#delete').modal();
         var id = $(this).data('id');
-        console.log(id);
         $("#titulo").html(" Eliminar del stock "+$(this).closest("tr").children("td").eq(0).html());
         $(".id").val(id);
     });
@@ -544,37 +280,11 @@ $('#table').on('draw.dt', function(){
     $(".out").click(function(){
         $('#out').modal();
         var id = $(this).data('id');
-        console.log(id);
         $("#titulout").html("Salida de: "+$(this).closest("tr").children("td").eq(2).html()+" ("+$(this).closest("tr").children("td").eq(3).html()+")");
         $(".id").val(id);
     });
 
 });
-/*
-jQuery(function($) {
-    $.datepicker.regional['es'] = {
-        closeText: 'Cerrar',
-        prevText: '&#x3c;Ant',
-        nextText: 'Sig&#x3e;',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-        ],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-        ],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi&eacute;rcoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mi&eacute;', 'Juv', 'Vie', 'S&aacute;b'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'S&aacute;'],
-        weekHeader: 'Sm',
-        dateFormat: 'yy/mm/dd',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['es']);
-});*/
 $("#ocultar").fadeTo(8000, 500).slideUp(500, function(){
     $("ocultar").alert('close');
 });

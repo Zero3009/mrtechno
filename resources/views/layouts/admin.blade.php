@@ -25,12 +25,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-black.css')}}">
   <link rel="stylesheet" href="{{asset('/vendor/adminlte/dist/css/skins/skin-blue.css')}}">
   <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css" />
+  <link rel="stylesheet" href="/plugins/vue/table/vuetable-2.css">
   <!-- jQuery 3 -->
+<script src="/plugins/jQuery/jquery-3.2.1.min.js"></script>
 <script src="/plugins/vue/vue.js"></script>
 <script src="/plugins/vue/select/vue-select.js"></script>
 <script src="/plugins/vue/axios/axios.js"></script>
+<script src="/plugins/vue/table/semantic.min.js"></script>
 <script src="/plugins/vue/datepicker/vuejs-datepicker.min.js"></script>
-<script src="/plugins/jQuery/jquery-3.2.1.min.js"></script>
+<script src="/plugins/vue/table/vuetable-2-full.js"></script>
+
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js"></script>

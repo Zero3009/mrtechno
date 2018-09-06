@@ -16,36 +16,33 @@
                     <div class="form-group">
 
                         @verbatim
-                        {{selected}}
-                        @endverbatim
                         <label class="control-label col-sm-2">Código de barras:</label>
                         <div class="col-sm-4">
                             <v-select :options="codigos" v-model="selected" placeholder="Código de barras"></v-select>
                             <input type="hidden" name="codbarras" v-model="selected.value">
-                            <!--<select id="codbarras" class="form-control" style="width: 100%" name="codbarras" type="text" required>
-                            	
-                            </select>-->
                         </div>
                         <label class="control-label col-sm-2">Modelo:</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" v-model="selected.modelo" readonly>
+                            <input type="text" class="form-control" v-model="selected.modelo" disabled>
                         </div>
+                        @endverbatim
                     </div>
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Serial:</label>
                     	<div class="col-sm-4">
-                    		<select id="serial" class="form-control" style="width: 100%" name="serial" type="text" required></select>
+                            <v-select :options="seriales" v-model="serial" placeholder="Serial" taggable></v-select>
+                            <input type="hidden" name="serial" v-model="serial.label">
                     	</div>
                     	<label class="control-label col-sm-2">Proveedor:</label>
                     	<div class="col-sm-4">
-                    		<select id="proveedor" class="form-control" style="width: 100%" name="proveedor" type="text" required></select>
+                            <v-select :options="proveedores" v-model="proveedor" placeholder="Proveedor"></v-select>
+                            <input type="hidden" name="proveedor" v-model="proveedor.value">
                     	</div>
                     </div>
                     <div class="form-group">
                     	<label class="control-label col-sm-2">Fecha Entrada:</label>
                     	<div class="col-sm-4">
-                            <vuejs-datepicker value="{{$stock->fechaEntrada}}" :language="es" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker>	
-                    		<!--<input placeholder="Fecha:" value="{{$stock->fechaEntrada}}" type="text" class="form-control" id="fecha" name="fecha"readonly="true" >-->
+                            <vuejs-datepicker input-class="form-control" value="{{$stock->fechaEntrada}}" :language="es" format="yyyy-MM-dd" name="fecha"></vuejs-datepicker>
                     	</div>
                     	<label class="control-label col-sm-2">Precio Entrada:</label>
                         <div class="col-sm-4">
@@ -53,18 +50,19 @@
                      	</div>
                     </div>
 
-                    @if($stock->fechaSalida)
-                    <div class="form-group">
-                    	<label class="control-label col-sm-2">Fecha:</label>
-                    	<div class="col-sm-4">	
-                    		<input placeholder="Fecha:" value="{{$stock->fechaSalida}}" type="text" class="form-control" id="fechaSalida" name="fechaSalida"readonly="true" >
-                    	</div>
-                    	<label class="control-label col-sm-2">Precio Salida:</label>
-                        <div class="col-sm-4">
-                    		<input type="number" value="{{$stock->precioSalida}}" class="form-control" name="precioSalida" id="precioSalida">
-                     	</div>
-                    </div> 		
-                    @endif
+                    <template v-if="blade.fechaSalida">
+                        <div class="form-group">
+                        	<label class="control-label col-sm-2">Fecha:</label>
+                        	<div class="col-sm-4">
+                                <vuejs-datepicker input-class="form-control" value="{{$stock->fechaSalida}}" :language="es" format="yyyy-MM-dd" name="fechaSalida"></vuejs-datepicker>
+                        	</div>
+                        	<label class="control-label col-sm-2">Precio Salida:</label>
+                            <div class="col-sm-4">
+                        		<input type="number" value="{{$stock->precioSalida}}" class="form-control" name="precioSalida" id="precioSalida">
+                         	</div>
+                        </div>
+                    </template>
+                    
 	            </div>
 	            <div class="panel-footer">
 	            	<input name="id" type="hidden" value="{{$stock->id}}">
@@ -79,18 +77,20 @@
 @section('js')
 @push('scripts')
 <script>
-    var state = {
-        date: new Date()
-    }
-
     Vue.component('v-select', VueSelect.VueSelect);
     var vm = new Vue({
         el: "#app",
         data: {
             codigos: [],
+            seriales: [],
+            proveedores: [],
             blade: null,
             selected: null,
-            url2: '/ajax/codbarras',
+            serial: null,
+            proveedor: null,
+            url: '/ajax/codbarras',
+            url2: '/ajax/seriales',
+            url3: '/ajax/proveedores',
             es: {Language: 'Spanish',
                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                    monthsAbbr: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -106,7 +106,7 @@
         methods:{
             codbarras()
             {
-                axios.get(this.url2)
+                axios.get(this.url)
                     .then(response => {
                         for(a = 0;a <response.data.length;a++)
                         {
@@ -116,6 +116,28 @@
                             }
                         }
                         this.codigos = response.data;
+                });
+                axios.get(this.url2)
+                    .then(response => {
+                        for(a = 0;a <response.data.length;a++)
+                        {
+                            if(this.blade.serial == response.data[a].label)
+                            {
+                                this.serial = response.data[a];
+                            }
+                        }
+                        this.seriales = response.data;
+                });
+                axios.get(this.url3)
+                    .then(response => {
+                        for(a = 0; a <response.data.length;a++)
+                        {
+                            if (this.blade.nombre == response.data[a].label) 
+                            {
+                                this.proveedor = response.data[a];
+                            }
+                            this.proveedores = response.data;
+                        }
                 });
             }
 
