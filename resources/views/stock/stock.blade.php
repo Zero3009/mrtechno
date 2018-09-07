@@ -137,7 +137,8 @@
                             <div class="form-group">
                                 <label class="form-label col-sm-8">Fecha de salida:</label>
                                 <div class="col-sm-8">
-                                <input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_out" name="fecha_out"readonly="true">
+                                <!--<input placeholder="Fecha:" value="<?php echo \Carbon\Carbon::now()->format('Y-m-d');?>" type="text" class="form-control" id="fecha_out" name="fecha_out"readonly="true">-->
+                                <vuejs-datepicker input-class="form-control" :value="state.date" format="yyyy-MM-dd" name="fecha_out" placeholder="Fecha" :language="es" full-month-name></vuejs-datepicker>
                                 </div>
                                 <label class="form-label col-sm-8">Precio de salida:</label>
                                 <div class="col-sm-8">
@@ -217,14 +218,22 @@
             {
                 axios.get(this.url4)
                     .then(response => {
-                        this.seriales = response.data;
+                        //this.seriales = response.data;
+                        var a = [];
+                        response.data.forEach(function(item){
+                            a.push(item.label);
+                        });   
+                        //console.log(a);
+                        this.seriales = a;
                 })
             },
             provees()
             {
                 axios.get(this.url3)
                     .then(response => {
-                        this.proveedores = response.data;   
+                        
+                        this.proveedores = response.data;
+
                 });
             },
             aument() 
